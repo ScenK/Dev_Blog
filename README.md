@@ -1,3 +1,6 @@
+
+##  同项目文件 bitbucket 分支请见: <https://bitbucket.org/Scen/dev_blog>
+##
 ### Copyright 2012-2013 Dev-engine
 ###
 ### Dev-Blog Python-Release Based On Tornado and MongoDB
@@ -20,9 +23,9 @@
             urls.py                        route相关
             yuicompressor.jar              YUI文件压缩器
         |--- Config/                       相关配置文件
-        |--- Handler/                      MVC中 C 结构 
-        |--- Model/                        MVC中 M 结构 
-        |--- Views/                        MVC中 V 结构 
+        |--- Handler/                      MVC中 C 结构
+        |--- Model/                        MVC中 M 结构
+        |--- Views/                        MVC中 V 结构
             |--- Admin/                    后端Admin页面
             |--- Diary/                    日志组建
             |--- modules/                  复用前端组建
@@ -46,9 +49,10 @@
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 + 安装须知:
 
+    * 项目Wiki地址: <https://github.com/ScenK/dev_blog/wiki>
     * 博客地址: <http://tuzii.me/>
     * 推荐使用独立VPS
-        本博客线上环境: Amazon EC2 + Ubuntu12.04 + Python2.7.3 + Nginx + Tornado + MongoDB2.2
+        本博客线上环境: Amazon EC2 + Ubuntu12.04 + Python2.7.3 + Nginx + Tornado + MongoDB2.0.2
     * 基础环境:
         Linux + Tornado + Python + MongoDB
     * 可选环境:
@@ -63,9 +67,12 @@
         - 执行fab test 开启服务器进程(或者在Supervisor开启python多进程)
         - 每次改动的代码更新都可以使用fab update 进行服务端代码自动更新
 
+
 + 待完成:
+
     * 后端管理功能逐项添加
     * api 的整理添加
+
 
 + 开发&使用须知:
 
