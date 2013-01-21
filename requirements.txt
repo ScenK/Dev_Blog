@@ -1,0 +1,7 @@
+douban-client
+sinaweibopy
+pymongo
+bson
+Fabric
+PyRSS2Gen
+markdown

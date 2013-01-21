@@ -1,0 +1,25 @@
+{% extends "../base.html" %}
+{% block title %} 编辑日志 {% end %}
+{% block content %}
+<h5 class="no-marg-top subheader">在此进行您的文章修改。</h5>
+<form action="" method="post">
+  <fieldset>
+	<legend>编辑文章</legend>
+    {{ xsrf_form_html() }}
+    <label>题目:</label>
+    <input type="hidden" name="did" value="{{ detail.get('_id')}}">
+    <input type="text" name="title" value="{{ detail.get('title')}}">
+
+    <ul class="button-group radius right">
+	  <li><a href="#" class="tiny secondary button radius">图片</a></li>
+	  <li><a href="#" class="tiny secondary button radius">链接</a></li>
+    </ul>
+    <label>正文:</label>
+    <textarea name="content" class="xxlarge">{{ detail.get('content')}}</textarea>
+    <input type="submit" value="发表" class="round small button">
+  </fieldset>
+</form>
+{% end %}
+{% block leftbar%}
+    {% module Template("Admin/Modules/_leftbar.html", current=1.1) %}
+{% end %}

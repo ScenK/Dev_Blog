@@ -1,0 +1,39 @@
+#!/usr/local/bin/python
+#coding=utf-8
+
+import os.path
+from pymongo import Connection
+
+class config():
+
+    @staticmethod
+    def site_config():
+        conf = {}
+
+        conf['cookie'] = "3123kdjdfkadsjlfk21321adfsad"
+        conf['db'] = Connection().dev_blog
+        conf['username'] = 'admin'
+        conf['email'] = 'he.kang@dev-engine.com'
+        conf['password'] = 'admin'
+        conf['title'] = 'Sea_Kudo 的博客'
+        conf['url'] = 'http://tuzii.me'
+        conf['keywords'] = '前端开发, 互联网, 技术博客, 个人博客, 生活记录'
+        conf['description'] = '并不是所有唯美的故事 都伴有精彩的风景. 我只愿尽我所能 带你看遍整个春夏秋冬.'
+        conf['port'] = '8000'
+        conf['analytics'] = '''<script type="text/javascript">
+                                </script>
+                            '''
+        conf['customsearch'] = '''<script type="text/javascript">
+                                </script>
+                            '''
+        conf['douban_app_key'] = ''
+        conf['douban_app_secret'] = ''
+        conf['weibo_app_key'] = ''
+        conf['weibo_app_secret'] = ''
+        conf['smtp_server'] = 'smtp.gmail.com'
+        conf['smtp_port'] = 587
+        conf['smtp_user'] = 'no-reply@dev-engine.com'
+        conf['smtp_password'] = ''
+        conf['debug'] = False
+
+        return conf

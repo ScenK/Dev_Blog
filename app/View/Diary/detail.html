@@ -1,0 +1,63 @@
+{% extends "../base.html" %}
+{% block title %} {{ detail.get('title') }} {% end %}
+
+{% block content %}
+<div class="diary-detail">
+<h3 class="center"><a href="/diary/detail/{{ detail.get('_id')}}" class="diary-title" title="{{ escape(detail.get('title')) }}">{{ escape(detail.get('title')) }}</a></h3>
+<div class="single-diary">
+  <div class="content">
+  <div class="title">
+    <b>发表时间:</b><span>{{ detail.get('publish_time') }}</span>&nbsp;&nbsp;<b>评论个数:</b><span>{% if detail.get('comments_count') is None %} 0 {% else %} {{ detail.get('comments_count') }} {% end %}</span>
+  </div>
+  <div class="summary" {% if detail.get('html') is None %}style="white-space: pre-wrap"{% end %}>
+    {{ detail.get('html') if detail.get('html') else detail.get('content') }}
+  </div>
+  </div>
+</div>
+
+<h4>评论:</h4>
+<div class="comments-area">
+{% if detail.get('comment') is not None %}
+  {% for i in detail.get('comment') %}
+    {% if i.get('parent_id') is None %}
+    <div class="single-diary comments">
+      <div class="content">
+          <div class="line-one"><b>{{i.get('user')}}</b><span>{{i.get('publish_time')}}</span></div>
+        <div class="line-two">{{ escape(i.get('content')) }}</div>
+      </div>
+    </div>
+    {% else %}
+    <div class="single-diary comments admin-reply">
+      <img class="avatar-image" src="{{ profile.get('avatar') }}">    
+      <div class="content">
+          <div class="line-one"><b>{{i.get('user')}}</b><span>{{i.get('publish_time')}}</span></div>
+        <div class="line-two">{{ escape(i.get('content')) }}</div>
+      </div>
+    </div>
+    {% end %}
+  {% end %}
+{% end %}
+</div>
+<h4>新增评论:<span class="welcome-back">{% if guest_name is not None %} { 欢迎回来~ <a>{{guest_name}}</a> } {% end %}</span></h4>
+  <div class="single-diary leave-comments">
+    <div class="content">
+      <form id="comment_add_form">
+        {{ xsrf_form_html() }}
+        <input type="hidden" id="did" value="{{ detail.get('_id') }}">
+        <label>姓名:
+            <input type="text" class="username" value={% if guest_name is not None %} {{guest_name}} {% end %}>
+        </label>
+        <label>
+          电子邮箱:
+          <input type="text" class="email" value={% if guest_email is not None %} {{guest_email}} {% end %}>
+        </label>
+        <label>
+          评论:
+          <textarea class="comment"></textarea>
+        </label>
+        <input type="button" value="提交" class="blue-button small" id="comment_add_form_btn">
+      </form>
+    </div>
+  </div>
+</div>
+{% end %}

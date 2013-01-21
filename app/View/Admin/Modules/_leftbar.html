@@ -1,0 +1,21 @@
+<section id="sidebar" role="complementary">
+  <ul class="tabs vertical hide-on-phones">
+    <li {% if current == 0 %} class='active' {% end %}><a href="/admin">仪表盘</a></li>
+    <li {% if current == 1 or current == 1.1 %} class='active' {% end %}>
+      <a href="/admin/all-post/1">文章</a>
+      <ul{% if current == 1 or current == 1.1 %}{% else %} class='hide' {% end %}>
+        <li {% if current == 1 %} class='active' {% end %}>
+          <a href="/admin/all-post/1">所有文章</a>
+        </li>
+        <li {% if current == 1.1 %} class='active' {% end %}>
+          <a href="/diary/add">写文章</a>
+        </li>
+      </ul>
+    </li>
+    <li {% if current == 2 %} class='active' {% end %}><a href="#">相册</a></li>
+    <li {% if current == 3 %} class='active' {% end %}><a href="#">统计</a></li>
+    <li {% if current == 4 %} class='active' {% end %}><a href="#">用户</a></li>
+    <li {% if current == 5 %} class='active' {% end %}><a href="/admin/settings">设置</a></li>
+    <li {% if current == 6 %} class='active' {% end %}><a href="/admin/comments/all-comment/1">评论</a></li>
+  </ul>
+</section>

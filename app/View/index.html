@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %} 首页 {% end %}
+{% block content %}
+<div class="home">
+  {% if amount > 0 %}
+    {% for i in diaries %}
+    <div class="single-diary">
+      <div class="content">
+      <div class="title">
+          <h4><a href="/diary/detail/{{ i.get('_id')}}" class="diary-title" title="{{ escape(i.get('title')) }}" target="_blank">{{ escape(i.get('title')) }}</a></h4><div class="publish-time">{{ i.get('publish_time') }}</div>
+      </div>
+      <div class="summary">
+        {{ escape(i.get('summary')) }}
+      </div>
+      </div>
+    </div>
+    {% end %}
+    <div class="center load-more" offset="{{ amount }}"><a href="javascript:void(0)">获取更多</a></div>
+  {% end %}
+</div>
+{% end %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %} 登陆验证 {% end %}
+{% block content %}
+
+  <form action="" method="post">
+      {{ xsrf_form_html() }}
+      <div>
+          <label>管理员账号:</label>
+          <input type="text" name="username">
+      </div>
+      <div>
+          <label>管理员密码:</label>
+          <input type="password" name="password">
+      </div>
+      <div>
+          <label>记住我</label>
+          <input type="checkbox" name="remember">
+          <input type="submit" value="提交">
+      </div>
+  </form>
+{% end %}

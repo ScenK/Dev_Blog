@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %} 仪表盘 {% end %}
+{% block content %}
+{% import datetime %}
+{% import time %}
+{% from time import mktime %}
+<div class="eight columns dashboard">
+    <h2>Backend Components</h2>
+    <h5 class="subheader">这里列出了Backend System 所有的主要功能 你可以在这里预览相关组件 并决定去向和进一步操作. <p class="red inbox f17">第一次使用 请<a href="{{ douban_login }}" class="green">连接豆瓣</a> 或 <a href="{{ weibo_login }}" class="green">连接微博</a></p></h5>
+
+    <div class="row">
+        <div class="six columns">
+            <dl>
+                <dt><h5><a>仪表盘</a></h5></dt>
+                <dd>您的博客创建于 <a>{{ site_start }}</a></dd>
+                {% for f in first_diary %}
+                <dd>最早的一篇文章叫做 <a href="diary/detail/{{ f.get('_id') }}" target="blank">{{ f.get('title') }}</a></dd>
+                {% end %}
+                {% for l in  last_diary %}
+                <dd>最近更新了 <a href="diary/detail/{{ l.get('_id') }}" target="blank">{{ l.get('title') }}</a></dd>
+                <dd>您一共写作了 <a>{{ diary_count }}</a> 篇日记，其中收到评论 <a>{{ comment_count }}</a> 条</dd>
+                <dd>距离您上次更新 已经有 <a>{{ (datetime.datetime.today() - datetime.datetime.fromtimestamp(time.mktime(time.strptime(l.get('publish_time'),"%Y-%m-%d %H:%M:%S")))).days }}</a> 天了</dd>
+                {% end %}
+            </dl>
+        </div>
+        <div class="six columns">
+            <dl>
+                <dt><h5><a>文章</a></h5></dt>
+                <dd>坚持记日记是一个好习惯</dd>
+                <dd>查看所有文章请移步 <a href="/admin/all-post/1">所有文章</a></dd>
+                <dd>添加新文章请移步 <a href="/diary/add">写文章</a></dd>
+                <dd>查看日志归档请移步 <a href="#">日志归档</a></dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="six columns">
+            <dl>
+                <dt><h5><a>评论</a></h5></dt>
+                <dd>在 <a>{{comment_count }}</a> 个评论中 有那么多认识的 不认识的与您擦肩 留下了点点的回忆</dd>
+                <dd>管理评论 请移步 <a href="/admin/comments/all-comment/1">评论管理</a></dd>
+            </dl>
+        </div>
+        <div class="six columns">
+            <dl>
+                <dt><h5><a>统计</a></h5></dt>
+                <dd>好的管理者是网站优秀的必要条件</dd>
+                <dd>如果您加载了Google Analitycs 请移步 <a href="#">统计</a></dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="six columns">
+            <dl>
+                <dt><h5><a>设置</a></h5></dt>
+                <dd>在这里您可以增加网站统计代码 修改网站标题 以及其他设置项目</dd>
+            </dl>
+        </div>
+        <div class="six columns">
+            <dl>
+                <dt><h5><a>相册</a></h5></dt>
+                <dd>此功能尚未开通 敬请期待</dd>
+            </dl>
+        </div>
+    </div>
+
+    <hr>
+</div>
+{% end %}

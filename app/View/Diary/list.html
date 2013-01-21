@@ -1,0 +1,27 @@
+{% extends "../base.html" %}
+{% block title %} 日志列表 {% end %}
+
+{% block content %}
+  <div class="diary-list">
+  {% for i in diaries %}
+    <div class="single-diary">
+      <div class="content">
+      <div class="title">
+          <h4><a href="/diary/detail/{{ i.get('_id')}}" class="diary-title" title="{{ escape(i.get('title')) }}" target="_blank">{{ escape(i.get('title')) }}</a></h4><div class="publish-time">{{ i.get('publish_time') }}</div>
+      </div>
+      <div class="summary">
+        {{ escape(i.get('summary')) }}
+      </div>
+      </div>
+    </div>
+  {% end %}
+    <div class="page-navi">
+      {% if int(page)-1 > 0 %}
+        <a href='/diary/list/{{ int(page)-1 }}' class="page-prev">上一页</a>
+      {% end %}
+      {% if int(page) != limit %}
+       <a href='/diary/list/{{ int(page)+1 }}' class="page-next">下一页</a>
+      {% end %}
+    </div>
+  </div>
+{% end %}

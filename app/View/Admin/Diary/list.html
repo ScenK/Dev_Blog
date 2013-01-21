@@ -1,0 +1,39 @@
+{% extends "../base.html" %}
+{% block title %} 日志归档 {% end %}
+
+{% block content %}
+  <table class="twelve admin-diary-list">
+    <thead>
+      <tr>
+        <th>发表时间</th>
+        <th>评论</th>
+        <th>文章标题</th>
+        <th>文章简介</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for i in diaries %}
+      <tr>
+        <td class="writeable" did="{{ i.get('_id')}}">{{ i.get('publish_time') }}</td>
+        <td>{% if i.get('comments_count') is None %} 0 {% else %} {{ i.get('comments_count') }} {% end %}</td>
+        <td><a href="/admin/diary/edit/{{ i.get('_id')}}" title="编辑《{{ escape(i.get('title')) }}》">{{ escape(i.get('title')) }}</a></td>
+        <td>{{ escape(i.get('summary')) }}</td>
+        <td><a href="/admin/diary/del/{{ i.get('_id')}}" title="删除《{{ escape(i.get('title')) }}》">删除</a></td>
+      </tr>
+    {% end %}
+    </tbody>
+  </table>
+
+  <div class="page-nav">
+    {% if int(page)-1 > 0 %}
+      <a class="left" href='/admin/all-post/{{ int(page)-1 }}'>上一页</a>
+    {% end %}
+    {% if int(page) != limit %}
+      <a class="right" href='/admin/all-post/{{ int(page)+1 }}'>下一页</a>
+    {% end %}
+  </div>
+{% end %}
+{% block leftbar%}
+    {% module Template("Admin/Modules/_leftbar.html", current=1) %}
+{% end %}

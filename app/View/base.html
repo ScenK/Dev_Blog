@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta type="utf-8">
+    <meta name="keywords" content="{{ escape(handler.settings['keywords']) }}">
+    <meta name="description" content="{{ escape(handler.settings['desc']) }}">
+    <!--[if IE]>
+    {% if handler.settings['debug'] is True %}
+      {{ static_url('css/ie-style.css') }}
+    {% else %}
+      <link rel="stylesheet" href="{{ static_url('css/ie-style.min.css') }}">
+    {% end %}
+    <![endif]-->
+    <title>{% block title %}{% end %} - {{ escape(handler.settings['title']) }}</title>
+    {% if handler.settings['debug'] is True %}
+      <link rel="stylesheet" href="{{ static_url('css/frontend.css') }}">
+    {% else %}
+      <link rel="stylesheet" href="{{ static_url('css/frontend.min.css') }}">
+    {% end %}
+  </head>
+  <body>
+    <div class="container" id="main">
+      <div class="row-fluid">
+        <div class="left-bar">
+            {% block leftbar %}
+            <div id="circle-mod">
+              <div id="container-circle">
+                <div id="button-1" class="btn">
+                  <div><a href="/">Like</a></div>
+                </div>
+                <div id="button-2" class="btn">
+                  <div id="call_search"><a href="javascript:void(0)">Search</a></div>
+                </div>
+                <div id="button-3" class="btn">
+                  <div><a href="/feed">Feed</a></div>
+                </div>
+                <div id="button-4" class="btn">
+                  <div><a href="/diary/list/1">List</a></div>
+                </div>
+                <div id="button-5" class="btn">
+                  <div><a href="/">Home</a></div>
+                </div>
+                <div id="base-button" class="">
+                  <div><a>+</a></div>
+                </div>
+              </div> 
+            </div>
+            {% end %}
+        </div>
+        <div class="main-content">
+          {% block content %}{% end %}
+        </div>
+        <div class="right-bar">
+        {% block rightbar %}
+          <div class="avatar">
+            <a href="javascript:void(0)"><img src="{{ profile.get('avatar') }}"><em>{{ profile.get('name') }}</em></a>
+          </div>
+          <div class="profile hide">
+            <label>Profile</label>
+            <ul>
+              <li>
+                {{ profile.get('loc_name') }}
+              </li>
+              <li>
+                {{ profile.get('desc') }}
+              </li>
+            </ul>
+          </div>
+        {% end %}
+        </div>
+      </div>
+    </div>
+    {% block script %}{% end %}
+    <script type="text/javascript" src="{{ static_url('lib/jquery-1.8.3.min.js') }}"></script>
+    {% if handler.settings['debug'] is True %}
+      <script type="text/javascript" src="{{ static_url('js/frontend.js') }}"></script>
+    {% else %}
+      <script type="text/javascript" src="{{ static_url('js/frontend.min.js') }}"></script>
+      {{ handler.settings['analytics'] }}
+      {{ handler.settings['customsearch'] }}
+      <gcse:search></gcse:search>
+      <div id='cloudy' class="gsc-modal-background-image" tabindex="0"></div>
+    {% end %}
+  </body>
+</html>
