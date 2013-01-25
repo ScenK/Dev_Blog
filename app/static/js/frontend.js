@@ -47,7 +47,7 @@
         $('<div class="single-diary comments new-comment"></div>').appendTo('.comments-area');
         $('body').animate({ scrollTop: $('.new-comment:last-child').offset().top - 200}, 900);
         $('.new-comment:last-child').hide().append(html).fadeIn(4000);
-        u_name.val('');u_email.val('');u_comment.val('');
+        u_comment.val('');
       }
       else{
         return false;

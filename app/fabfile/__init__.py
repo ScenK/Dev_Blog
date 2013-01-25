@@ -3,8 +3,12 @@
 
 import re
 from fabric.api import *
-from Config.config import config as conf
 import datetime
+try:
+    from Config.config import config as conf
+except:
+    print '请先编辑移动Config/config.py.sample进行网站初始化配置'
+    return 
 
 conf = conf.site_config()
 
@@ -15,7 +19,7 @@ def deploy():
 
 @task
 def test():
-    local("python ./runserver.py")
+    local("python ./runserver.py --port=8000")
 
 @task
 def build():
@@ -26,8 +30,6 @@ def build():
     print "Default Admin add Success!"
     kid.save({'k': 0})
     print "Auto uuid add Success!"
-    sudo('cp ./Config/config.py.sample ./Config/config.py')
-    print "Config File add Success!"
 
 @task
 def compress():

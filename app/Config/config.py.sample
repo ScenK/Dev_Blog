@@ -15,11 +15,10 @@ class config():
         conf['username'] = 'admin'
         conf['email'] = 'he.kang@dev-engine.com'
         conf['password'] = 'admin'
-        conf['title'] = 'Sea_Kudo 的博客'
+        conf['title'] = 'Sea_Kudo的博客'
         conf['url'] = 'http://tuzii.me'
         conf['keywords'] = '前端开发, 互联网, 技术博客, 个人博客, 生活记录'
         conf['description'] = '并不是所有唯美的故事 都伴有精彩的风景. 我只愿尽我所能 带你看遍整个春夏秋冬.'
-        conf['port'] = '8000'
         conf['analytics'] = '''<script type="text/javascript">
                                 </script>
                             '''

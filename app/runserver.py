@@ -3,29 +3,20 @@
 #author: He.Kang@dev-engine.com
 
 import sys
-sys.path.append('../lib/')
 
-import tornado.options
+import tornado.web
+from tornado.options import define, options, logging
 from tornado.httpserver import HTTPServer
-
 from application import application
 
-from Config.config import config
-
-config = config.site_config()
-
-PORT = config['port']
+define("port", default=8888, help="run on the given port", type=int)
 
 def main():
     tornado.options.parse_command_line()
-    application.listen(PORT)
-    print 'Dev server is running as http://127.0.0.1:%s/' % PORT
-    print 'Quit the server with CONTROL-C'
+    logging.info("Starting Tornado web server on http://127.0.0.1:%s" % options.port)
+    application.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()
-
+    print 'Quit the server with CONTROL-C'
 
 if __name__ == "__main__":
     main()
-
-
-
