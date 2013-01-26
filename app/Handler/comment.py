@@ -4,7 +4,7 @@
 import tornado.web
 from base import BaseHandler
 from Model.comments import Comment
-from lib.email_util import send_mail
+from lib.email_util import send_mail, generateHtml
 import datetime
 from Config.config import config as conf
 
@@ -26,7 +26,7 @@ class CommentAddHandler(BaseHandler):
         self.set_secure_cookie("guest_email", email)
 
         try:
-            send_mail(conf['email'], conf['title']+'收到了新的评论, 请查收', comment)
+            send_mail(conf['email'], conf['title']+'收到了新的评论, 请查收', comment, did, user)
             self.write('success')
         except Exception as e:
             print str(e)
@@ -52,6 +52,7 @@ class CommentReplyHandler(BaseHandler):
         receiver = self.get_argument('email')
         title = self.get_argument('title')
         content = self.get_argument('content')
+        user = self.get_argument('user')
 
         try:
             Comment.reply(did, cid, content)
@@ -59,7 +60,7 @@ class CommentReplyHandler(BaseHandler):
             print str(e)
 
         try:
-            send_mail(receiver, u'您评论的文章'+title+u'收到了来自博主的回复, 请查收', content)
+            send_mail(receiver, u'您评论的文章《'+title+u'》收到了来自博主的回复, 请查收', content, did, user)
             self.write('success')
         except Exception as e:
             print str(e)

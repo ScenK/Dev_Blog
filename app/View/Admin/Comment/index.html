@@ -18,7 +18,7 @@
         <td class="comment-content">
           <div class="line-one">{{ escape(i.get('content')) }}</div>
           <div class="row-actions hide">
-            <a href="javascript:void(0)" class="reply" cid="{{ i.get('_id') }}" did="{{ i.get('did') }}" email="{{ i.get('email') }}" title="{{ escape(i.get('diary_title')) }}" data-reveal-id="reply-modal">回复</a>
+              <a href="javascript:void(0)" class="reply" cid="{{ i.get('_id') }}" did="{{ i.get('did') }}" email="{{ i.get('email') }}" title="{{ escape(i.get('diary_title')) }}" user="{{ i.get('user') }}">回复</a>
             <a href="#" class="rubbish">垃圾评论</a>
             <a href="javascript:void(0)" cid="{{ i.get('_id') }}" class="delete comment_del" did="{{ i.get('did') }}">删除</a>
           </div>

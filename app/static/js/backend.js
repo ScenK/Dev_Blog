@@ -15,6 +15,7 @@
         cid  = self.attr('cid'),
         did  = self.attr('did'),
         email = self.attr('email'),
+        user = self.attr('user'),
         title = self.attr('title');
 
     if(email !== 'None'){
@@ -30,6 +31,8 @@
                   email +
                   '" title="' +
                   title +
+                  '" user="' +
+                  user +
                  '">回复</a></td>';
       $('.admin-reply-area').hide().append(html).fadeIn(400);
     }else{
@@ -44,9 +47,10 @@
         cid  = self.attr('cid'),
         did  = self.attr('did'),
         email = self.attr('email'),
+        user = self.attr('user'),
         title = self.attr('title');
 
-    reply(cid, did, email, title, content);
+    reply(cid, did, email, title, content, user);
 
     $(".admin-reply-area").fadeOut(400, function(){
       var self = $(this);
@@ -140,13 +144,13 @@
   }
 
   // AJAX Comment Reply Function
-  function reply(cid, did, email, title, content) {
+  function reply(cid, did, email, title, content, user) {
       var url = '/admin/comment/reply';
       var _xsrf = getCookie("_xsrf");
       $.ajax({
         type: 'POST',
         url: url,
-        data: {content:content, did:did, cid:cid, _xsrf:_xsrf, email:email, title:title}
+        data: {content:content, did:did, cid:cid, _xsrf:_xsrf, email:email, title:title, user:user}
       });
   };
 
