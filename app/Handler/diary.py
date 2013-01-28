@@ -7,24 +7,30 @@ from Model.diaries import Diary
 from Model.comments import Comment
 from base import BaseHandler
 import json
+from lib.email_util import send_error_email
 
 # Diarydetail Page
 class DiaryDetailHandler(BaseHandler):
     def get(self, _id):
         try:
             detail = Diary.get_detail(_id)
-            profile = Account.get()
         except Exception as e:
-            print str(e)
+            self.send_error(404)
+            send_error_email('Diary Detail Error', str(e))
 
-        try:
-            guest_name = self.get_secure_cookie('guest_name')
-            guest_email = self.get_secure_cookie('guest_email')
-        except:
-            guest_name = None
-            guest_email = None
+        if detail is not None:
+            profile = Account.get()
+            try:
+               guest_name = self.get_secure_cookie('guest_name')
+               guest_email = self.get_secure_cookie('guest_email')
+            except:
+               guest_name = None
+               guest_email = None
 
-        self.render('Diary/detail.html', detail=detail, profile=profile, guest_name=guest_name, guest_email=guest_email)
+            self.render('Diary/detail.html', detail=detail, profile=profile, guest_name=guest_name, guest_email=guest_email)
+        else:
+            self.send_error(404)
+
 
 
 class DiaryListHandler(BaseHandler):
@@ -33,16 +39,21 @@ class DiaryListHandler(BaseHandler):
         try:
             profile = Account.get()
             diaries = Diary.get_diary_list(page)
-            number = Diary.get_diary_count()
         except Exception as e:
-            print str(e)
+            self.send_error(404)
+            send_error_email('Diary List Error', str(e))
 
-        if number % 15 == 0:
-            limit = number / 15
+        number = diaries.count(with_limit_and_skip=True)
+
+        if number == 15:
+            next_page = True
+        elif number < 1:
+            self.send_error(404)
+            return 
         else:
-            limit = number / 15 + 1
+            next_page = False
 
-        self.render('Diary/list.html', diaries=diaries, profile=profile, page=page, limit=limit)
+        self.render('Diary/list.html', diaries=diaries, profile=profile, page=page, next_page=next_page)
 
 # AJAX Diary Load_action
 class DiaryLoadHandler(BaseHandler):

@@ -45,3 +45,19 @@ def generateHtml(content, did, username):
     html += '">返回原文</a></td></tr></tbody>'
     html += '<tfoot><tr><td colspan="2" style="font-size:11px;color:#999;padding-top:20px;">Copyright &copy; 2012-2013 Dev_Blog 博客评论邮件提醒。 Written By Scen(he.kang@dev-engine.com)</td></tr></tfoot></table>'
     return html
+
+def send_error_email(title, error_log):
+    sender = conf['smtp_user']
+    password = conf['smtp_password']
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = Header(title,"UTF-8")
+    msg['From'] = sender
+    msg['To'] = conf['email']
+    part = MIMEText(error_log, 'html', _charset='UTF-8')
+    msg.attach(part)
+
+    server = smtplib.SMTP(conf['smtp_server'], conf['smtp_port'])
+    server.starttls()
+    server.login(sender,password)
+    server.sendmail(sender, conf['email'], msg.as_string())
+    server.quit()

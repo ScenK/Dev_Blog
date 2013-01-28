@@ -67,6 +67,14 @@
     $('#___gcse_0').fadeOut().removeClass('gsc-results-wrapper-visible');
   });
 
+  // Comment testarea auto height
+  $('#comment_add_form textarea').live('keydown', function(e){
+    var self = $(this);
+    if(e.keyCode == 13){
+      self.height(self.height()+15);
+    };
+  });
+
 
   /*=======jQuery Functions===============*/
   
@@ -146,7 +154,7 @@
 
   // Email Check Function
   function emailCheck(target){
-    var rule = /^[a-zA-Z0-9]+[a-zA-Z0-9_.-]+[a-zA-Z0-9_-]+@[a-zA-Z0-9]+[a-zA-Z0-9]+.[a-z]{2,4}$/;
+    var rule = /^[a-zA-Z0-9]+[a-zA-Z0-9_.-]+[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+[a-zA-Z0-9_-]+.[a-z]{2,4}$/;
     if(!rule.test(target.val())){
       target.addClass('email-error');
       return false;

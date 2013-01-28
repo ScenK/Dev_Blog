@@ -29,7 +29,7 @@
     {% if int(page)-1 > 0 %}
       <a class="left" href='/admin/all-post/{{ int(page)-1 }}'>上一页</a>
     {% end %}
-    {% if int(page) != limit %}
+    {% if next_page == True %}
       <a class="right" href='/admin/all-post/{{ int(page)+1 }}'>下一页</a>
     {% end %}
   </div>

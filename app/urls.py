@@ -15,6 +15,7 @@ from Handler.admin import AdminHandler, LoginHandler, LogoutHandler, AdminDiaryL
                               
 from Handler.comment import CommentAddHandler, CommentDelHandler,\
                             CommentReplyHandler
+from Handler.error import ErrorHandler
 
 urls = [
     (r'/', HomeHandler),
@@ -40,4 +41,5 @@ urls = [
     (r'/admin/comment/reply', CommentReplyHandler),
 
     (r'/comment/add', CommentAddHandler),
+    (r'.*', ErrorHandler),
 ]

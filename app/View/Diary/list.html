@@ -19,7 +19,7 @@
       {% if int(page)-1 > 0 %}
         <a href='/diary/list/{{ int(page)-1 }}' class="page-prev">上一页</a>
       {% end %}
-      {% if int(page) != limit %}
+      {% if next_page == True %}
        <a href='/diary/list/{{ int(page)+1 }}' class="page-next">下一页</a>
       {% end %}
     </div>

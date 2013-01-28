@@ -91,16 +91,19 @@ class AdminDiaryListHandler(BaseHandler):
 
         try:
             diaries = Diary.get_diary_list(page)
-            number = Diary.get_diary_count()
         except Exception as e:
             print str(e)
 
-        if number % 15 == 0:
-            limit = number / 15
+        number = diaries.count(with_limit_and_skip=True)
+        if number == 15:
+            next_page = True
+        elif number < 1:
+            self.send_error(404)
+            return 
         else:
-            limit = number / 15 + 1
+            next_page = False
 
-        self.render('Admin/Diary/list.html', diaries=diaries, page=page, limit=limit)
+        self.render('Admin/Diary/list.html', diaries=diaries, page=page, next_page=next_page)
 
 # Settings_page 
 class AdminSettingsHandler(BaseHandler):
@@ -115,16 +118,19 @@ class AdminCommentHandler(BaseHandler):
         
         try:
             comments = Comment.get(page)
-            number = Comment.get_comment_count()
         except Exception as e:
             print str(e)
 
-        if number % 15 == 0:
-            limit = number / 15
+        number = comments.count(with_limit_and_skip=True)
+        if number == 15:
+            next_page = True
+        elif number < 1:
+            self.send_error(404)
+            return 
         else:
-            limit = number / 15 + 1
+            next_page = False
 
-        self.render('Admin/Comment/index.html', comments=comments, page=page, limit=limit)
+        self.render('Admin/Comment/index.html', comments=comments, page=page, next_page=next_page)
 
 # Diary Add_action
 class DiaryAddHandler(BaseHandler):

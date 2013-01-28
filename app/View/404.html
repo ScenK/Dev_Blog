@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="keywords" content="{{ escape(handler.settings['keywords']) }}">
+    <meta name="description" content="{{ escape(handler.settings['desc']) }}">
+    <!--[if IE]>
+    {% if handler.settings['debug'] is True %}
+      {{ static_url('css/ie-style.css') }}
+    {% else %}
+      <link rel="stylesheet" href="{{ static_url('css/ie-style.min.css') }}">
+    {% end %}
+    <![endif]-->
+    <title>{% block title %} 没有找到相关页面{% end %} - {{ escape(handler.settings['title']) }}</title>
+    {% if handler.settings['debug'] is True %}
+      <link rel="stylesheet" href="{{ static_url('css/frontend.css') }}">
+    {% else %}
+      <link rel="stylesheet" href="{{ static_url('css/frontend.min.css') }}">
+    {% end %}
+  </head>
+  <body>
+    <div class="container error-page">
+      <div class="message">
+        <p>你貌似迷路了...</p>
+      </div>
+      <div class="pen">
+      </div>
+      <div class="back"><a href="/">点这里回到主页</a>
+      </div>
+    </div>
+  </body>
+</html>
