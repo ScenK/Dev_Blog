@@ -9,6 +9,7 @@ from bson import json_util
 from lib.kid import Kid
 import PyRSS2Gen
 import markdown
+from lib.upyun import UpYun,md5,md5file
 
 db = conf.site_config()['db']
 conf = conf.site_config()
@@ -132,3 +133,25 @@ class Diary(object):
     @staticmethod
     def get_diary_list(page):
         return db.diaries.find(limit=15).skip((int(page)-1)*15).sort('publish_time', -1)
+
+    @staticmethod
+    def up_to_upyun(data):
+        img_data = data.get('body')
+        img_name = data.get('filename').encode("utf-8")
+
+        bucket = conf['upyun_bucket']
+        admin = conf['upyun_admin']
+        password = conf['upyun_password']
+
+        u = UpYun(bucket, admin, password)
+        u.setApiDomain('v0.api.upyun.com')
+        #TODO u.setContentMD5(md5file(data))
+
+        # save file
+        year = datetime.datetime.now().strftime("%Y")
+        month = datetime.datetime.now().strftime("%m")
+        day = datetime.datetime.now().strftime("%d")
+        target = '/diary/%s/%s/%s/%s' % (year, month, day, img_name)
+        a = u.writeFile(str(target) , img_data, True)
+        url = conf['upyun_url'] + str(target)
+        return url

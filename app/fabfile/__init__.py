@@ -29,19 +29,33 @@ def build():
 
 @task
 def compress():
-    execute(compress_js)
+    execute(compress_all_js)
     execute(compress_css)
 
 @task
-def compress_js():
-    js_files = ['frontend', 'backend']
+def compress_all_js():
+    compress_js('frontend')
+    compress_js('backend')
 
-    local("rm -f static/js/*.min*.js")
+@task
+def compress_js(debug_files):
+    js_files = []
 
+    target  = open('static/js/'+debug_files+'.js', "r")
+    p = re.compile("document.*src=\'/(.*?)\'.*")
+    for line in target:
+        m = p.match(line)
+        if m:
+            js_files.append(m.group(1))
+    target.close()
+
+    local("rm -f static/js/%s.min*.js" % debug_files)
+
+    compressed_file = "static/js/%s.min.js" % debug_files
     for f in js_files:
         local(
             'java -jar yuicompressor.jar --charset utf-8 --type js %s >> %s' %
-            ('static/js/'+f+'.js', 'static/js/'+f+'.min.js'))
+            (f, compressed_file))
 
 @task
 def compress_css():
@@ -65,4 +79,3 @@ def lessc():
 def update():
     local("git pull")
     execute(deploy)
-

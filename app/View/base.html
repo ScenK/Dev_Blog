@@ -20,7 +20,7 @@
   </head>
   <body>
     <div class="container" id="main">
-      <div class="row-fluid">
+      <div class="row-fluid clearfix">
         <div class="left-bar">
             {% block leftbar %}
             <div id="circle-mod">
@@ -69,9 +69,9 @@
         {% end %}
         </div>
       </div>
+      <footer><div class="center">Powered By <a href="http://www.tornadoweb.org" target="_blank"> Tornado </a>&<a href="http://mongodb.org" target="_blank"> MongoDB </a> | Author <a href="/about"> Scen </a> | OpenSource <a target="_blank" href="https://github.com/ScenK/dev_blog"> Github </a> & <a target="_blank" href="https://bitbucket.org/Scen/dev_blog"> Bitbucket </a> </div></footer>
     </div>
     {% block script %}{% end %}
-    <script type="text/javascript" src="{{ static_url('lib/jquery-1.8.3.min.js') }}"></script>
     {% if handler.settings['debug'] is True %}
       <script type="text/javascript" src="{{ static_url('js/frontend.js') }}"></script>
     {% else %}

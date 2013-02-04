@@ -210,3 +210,15 @@ class DiarySetDateHandler(BaseHandler):
             self.write('success')
         except Exception as e:
             print str(e)
+
+# Diary add_photo_action
+class DiaryAddPhotoHandler(BaseHandler):
+    @tornado.web.authenticated
+    def post(self, *args):
+        data = self.request.files['userfile']
+        try:
+          url = Diary.up_to_upyun(data[0])
+          self.write('![](%s)' % str(url))
+        except Exception as e:
+          print str(e)
+

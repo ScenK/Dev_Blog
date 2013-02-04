@@ -27,6 +27,21 @@ body{
 .hide{
   display: none;
 }
+.clearfix {
+  *zoom: 1;
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+    // Fixes Opera/contenteditable bug:
+    // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
+    line-height: 0;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
 #main{
   overflow-x: hidden;
 }
@@ -433,5 +448,13 @@ h4{
       text-decoration: none;
       &:hover{text-decoration: underline;}
     }
+  }
+}
+footer{
+  color: #000;
+  font-size: 12px;
+  a{
+    color: #ca669a;
+    &:hover{text-decoration: underline;}
   }
 }

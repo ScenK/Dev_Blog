@@ -11,8 +11,7 @@
     <input type="text" name="title" value="{{ detail.get('title')}}">
 
     <ul class="button-group radius right">
-	  <li><a href="#" class="tiny secondary button radius">图片</a></li>
-	  <li><a href="#" class="tiny secondary button radius">链接</a></li>
+        <li><a href="javascript:void(0)"  class="tiny secondary button radius" id="add_photo">图片</a></li>
     </ul>
     <label>正文:</label>
     <textarea name="content" class="xxlarge">{{ detail.get('content')}}</textarea>
@@ -22,4 +21,12 @@
 {% end %}
 {% block leftbar%}
     {% module Template("Admin/Modules/_leftbar.html", current=1.1) %}
+{% end %}
+{% block script %}
+<div id="add_photo_modal" class="reveal-modal">
+  <h2>添加图片.</h2>
+  <button id="up_image" class="normal radius small button">上传图片</button>
+  <input type="text" id="up_image_bak_url" />
+  <a class="close-reveal-modal">&#215;</a>
+</div>
 {% end %}

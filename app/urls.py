@@ -11,7 +11,8 @@ from Handler.diary import DiaryListHandler,\
                           DiaryLoadHandler, DiaryRssHandler
 from Handler.admin import AdminHandler, LoginHandler, LogoutHandler, AdminDiaryListHandler,\
                           AdminSettingsHandler, AdminCommentHandler,DiaryAddHandler,\
-                          DiaryDelHandler, DiaryUpdateHandler, DiarySetDateHandler
+                          DiaryDelHandler, DiaryUpdateHandler, DiarySetDateHandler,\
+                          DiaryAddPhotoHandler
                               
 from Handler.comment import CommentAddHandler, CommentDelHandler,\
                             CommentReplyHandler
@@ -36,6 +37,7 @@ urls = [
     (r'/admin/diary/edit/([0-9]+)', DiaryUpdateHandler),
     (r'/admin/diary/del/([0-9]+)', DiaryDelHandler),
     (r'/admin/diary/set-date', DiarySetDateHandler),
+    (r'/admin/diary/add-photo', DiaryAddPhotoHandler),
     (r'/admin/comments/all-comment/([0-9]+)', AdminCommentHandler),
     (r'/admin/comment/del', CommentDelHandler),
     (r'/admin/comment/reply', CommentReplyHandler),

@@ -33,6 +33,10 @@ class config():
         conf['smtp_port'] = 587
         conf['smtp_user'] = 'no-reply@dev-engine.com'
         conf['smtp_password'] = ''
+        conf['upyun_url'] = ''
+        conf['upyun_bucket'] = ''
+        conf['upyun_admin'] = ''
+        conf['upyun_password'] = ''
         conf['debug'] = False
 
         return conf
