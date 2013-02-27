@@ -1,0 +1,31 @@
+{% extends "../base.html" %}
+{% block title %} 相册管理 {% end %}
+
+{% block content %}
+<h5 class="no-marg-top subheader">相册管理<a href="javascript:void(0)" id="call_add_gallary_modal">  创建新相册</a></h5>
+<div class="row gallary">
+    {% for i in gallaries %}
+    <div class="three columns single-column">
+        <dl>
+            <dt><h5><i class="foundicon-folder"></i><a href="/admin/gallary/detail/{{ i.get('_id') }}">{{ escape(i.get('title')) }}</a></h5></dt>
+            {% if i.get('index') is not None %}<dd><a href="/admin/gallary/detail/{{ i.get('_id') }}"><img src="{{ i.get('index') }}"/></a></dd>{% end %}
+            <dd>{{ escape(i.get('description')) }}</dd>
+            <dd>{{ escape(i.get('publish_time')) }}</dd>
+        </dl>
+    </div>
+    {% end %}
+</div>
+{% end %}
+{% block leftbar %}
+    {% module Template("Admin/Modules/_leftbar.html", current=2) %}
+{% end %}
+{% block script %}
+<div id="gallary_add_modal" class="reveal-modal">
+  <p>相册名称</p>
+  <input type="text" />
+  <p>相册描述</p>
+  <textarea></textarea>
+  <button id="do_add_gallary" class="success radius small button">提交</button>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+{% end %}

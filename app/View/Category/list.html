@@ -1,0 +1,15 @@
+{% extends "../base.html" %}
+{% block title %} {{ detail.get('name') }} {% end %}
+{% block content %}
+<div id="content-container">
+  {% for i in sorted_diaries %}
+  <div class="post">
+    <h1><a class="post-title" href="/diary/detail/{{ i.get('did')}}" title="{{ escape(i.get('title')) }}">{{ escape(i.get('title')) }}</a></h1>
+    <div class="author"><span>Author:</span> <a>{{ profile.get('name')}}</a>&nbsp;<span>Posted:</span> {{ i.get('publish_time') }}</div>
+
+    <p>详细阅读... <a href="/diary/detail/{{ i.get('did')}}" class="more-link">(more…)</a></p>
+
+  </div>
+  {% end %}
+</div>
+{% end %}

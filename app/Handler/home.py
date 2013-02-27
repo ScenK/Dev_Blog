@@ -6,6 +6,7 @@ import tornado.web
 from douban_client import DoubanClient
 from Model.accounts import Account
 from Model.diaries import Diary
+from Model.categories import Category
 from base import BaseHandler
 
 class HomeHandler(BaseHandler):
@@ -13,6 +14,7 @@ class HomeHandler(BaseHandler):
 
         try:
             profile = Account.get()
+            categories = Category.get()
         except Exception as e:
             print str(e)
 
@@ -27,7 +29,14 @@ class HomeHandler(BaseHandler):
             print str(e)
             return
 
-        if amount >= 5:
-            amount = 5
+        number = diaries.count(with_limit_and_skip=True)
 
-        self.render('index.html', profile=profile, diaries=diaries, amount=amount)
+        if number == 5:
+            next_page = True
+        elif number < 1:
+            self.send_error(404)
+            return 
+        else:
+            next_page = False
+
+        self.render('index.html', profile=profile, diaries=diaries, next_page=next_page, categories=categories)

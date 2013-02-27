@@ -19,57 +19,34 @@
     {% end %}
   </head>
   <body>
-    <div class="container" id="main">
-      <div class="row-fluid clearfix">
-        <div class="left-bar">
-            {% block leftbar %}
-            <div id="circle-mod">
-              <div id="container-circle">
-                <div id="button-1" class="btn">
-                  <div><a href="https://github.com/ScenK/dev_blog">Code</a></div>
-                </div>
-                <div id="button-2" class="btn">
-                  <div id="call_search"><a href="javascript:void(0)">Search</a></div>
-                </div>
-                <div id="button-3" class="btn">
-                  <div><a href="/feed">Feed</a></div>
-                </div>
-                <div id="button-4" class="btn">
-                  <div><a href="/diary/list/1">List</a></div>
-                </div>
-                <div id="button-5" class="btn">
-                  <div><a href="/">Home</a></div>
-                </div>
-                <div id="base-button" class="">
-                  <div><a>+</a></div>
-                </div>
-              </div> 
-            </div>
-            {% end %}
-        </div>
-        <div class="main-content">
-          {% block content %}{% end %}
-        </div>
-        <div class="right-bar">
-        {% block rightbar %}
-          <div class="avatar">
-            <a href="javascript:void(0)"><img src="{{ profile.get('avatar') }}"><em>{{ profile.get('name') }}</em></a>
-          </div>
-          <div class="profile hide">
-            <label>Profile</label>
-            <ul>
-              <li>
-                {{ profile.get('loc_name') }}
-              </li>
-              <li>
-                {{ profile.get('desc') }}
-              </li>
-            </ul>
-          </div>
-        {% end %}
-        </div>
+    <div id="container">
+      <div id="logo">
+        <a href="/"><img src="/static/img/logo.png" width="222" height="206"></a>
+        <p>不要因为工作 学习 忙碌 而忽视了生活.</p>
       </div>
-      <footer><div class="center">Powered By <a href="http://www.tornadoweb.org" target="_blank"> Tornado </a>&<a href="http://mongodb.org" target="_blank"> MongoDB </a> | Author <a href="/about"> Scen </a> | OpenSource <a target="_blank" href="https://github.com/ScenK/dev_blog"> Github </a> & <a target="_blank" href="https://bitbucket.org/Scen/dev_blog"> Bitbucket </a> </div></footer>
+      <div id="nav">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <!--<li><a href="/gallary">Gallary</a></li>-->
+          <li><a href="/about">About Me</a></li>
+        </ul>
+      </div>
+      {% block content %}
+      {% end %}
+      <div id="sidebar">
+        <img src="/static/img/archive.png" title="Archieve" alt="Stupid image won't show">
+        <ul id="side-cats">
+          {% for i in categories %}
+          <li class="cat-item"><a href="/category/{{ i.get('_id') }}" title="{{ i.get('name') }}">{{ i.get('name') }}({{ i.get('diaries_num') }})</a></li>
+          {% end %}
+        </ul>
+        <img id="recent-comments-title" src="/static/img/recentcomments.png" title="Recent Comments" alt="Stupid image won't show">
+        <ul id="recent-comments">
+          <li><a href="http://xsky.me/" title="空の領域">空の領域</a>: 小天的博客...坑爹女一枚...</li>
+          <li><a href="http://www.youmeek.com/" title="YouMeek">YouMeek</a>: Judas.n的博客...低调男一枚...</li>
+          <li><a href="javascript:void(0)" title="交换链接">交换链接</a>: 交换链接可以留言...博客收入现已均衡...谢绝下三烂的广告提供...</li>
+        </ul>
+      </div>
     </div>
     {% block script %}{% end %}
     {% if handler.settings['debug'] is True %}

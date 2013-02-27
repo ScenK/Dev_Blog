@@ -9,7 +9,7 @@ from bson import json_util
 from lib.kid import Kid
 import PyRSS2Gen
 import markdown
-from lib.upyun import UpYun,md5,md5file
+from categories import Category
 
 db = conf.site_config()['db']
 conf = conf.site_config()
@@ -29,20 +29,30 @@ class Diary(object):
     @staticmethod
     def del_diary(_id):
         db.diaries.remove({'_id': int(_id)})
+        Category.del_diary(_id)
         return
 
     @staticmethod
-    def update(_id, title, content):
+    def update(_id, title, content, c_name, c_id):
         summary = content[0:80] + '...'
         html = markdown.markdown(content)
         diary = {
                 "title": title,
                 "content": content,
-                "summary": summary,
+                "category": c_name,
+                "category_id": int(c_id),
+                "summary": markdown.markdown(summary),
                 "html": html,
                 "update_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 }
+
+        publish_time = Diary.get_detail(_id).get('publish_time') 
+        last_cid = Diary.get_detail(_id).get('category_id') 
+
         db.diaries.update({'_id': int(_id)}, {'$set': diary})
+
+        #Save for category
+        Category.update_diary(c_id, _id, title, publish_time, last_cid)
         return
 
     #Design For Link Douban Diary 
@@ -64,7 +74,7 @@ class Diary(object):
         return collection
 
     @staticmethod
-    def add(title, content):
+    def add(title, content, c_name, c_id):
         diaries = db.diaries
 
         summary = content[0:80] + '...'
@@ -73,12 +83,15 @@ class Diary(object):
         diary = {
                 "_id": Kid.kid(),
                 "title": title,
+                "category": c_name,
+                "category_id": int(c_id),
                 "content": content,
                 "html": html,
                 "summary": summary,
                 "publish_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 }
         diaries.save(diary)
+        Category.update_diary(c_id, diary.get('_id'), title, diary.get('publish_time'))
         return 
 
     @staticmethod
@@ -132,26 +145,4 @@ class Diary(object):
 
     @staticmethod
     def get_diary_list(page):
-        return db.diaries.find(limit=15).skip((int(page)-1)*15).sort('publish_time', -1)
-
-    @staticmethod
-    def up_to_upyun(data):
-        img_data = data.get('body')
-        img_name = data.get('filename').encode("utf-8")
-
-        bucket = conf['upyun_bucket']
-        admin = conf['upyun_admin']
-        password = conf['upyun_password']
-
-        u = UpYun(bucket, admin, password)
-        u.setApiDomain('v0.api.upyun.com')
-        #TODO u.setContentMD5(md5file(data))
-
-        # save file
-        year = datetime.datetime.now().strftime("%Y")
-        month = datetime.datetime.now().strftime("%m")
-        day = datetime.datetime.now().strftime("%d")
-        target = '/diary/%s/%s/%s/%s' % (year, month, day, img_name)
-        a = u.writeFile(str(target) , img_data, True)
-        url = conf['upyun_url'] + str(target)
-        return url
+        return db.diaries.find(limit=5).skip((int(page)-1)*5).sort('publish_time', -1)

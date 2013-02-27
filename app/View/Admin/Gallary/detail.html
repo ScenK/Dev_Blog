@@ -1,0 +1,29 @@
+{% extends "../base.html" %}
+{% block title %} 相册详情 {% end %}
+
+{% block content %}
+<h5 class="no-marg-top subheader">相册详情<a href="javascript:void(0)" id="call_add_photos_modal">  上传照片</a></h5>
+<div class="row gallary">
+{% if photos.get('content') is not None %}
+  {% for i in photos.get('content') %}
+  <div class="three columns single-column">
+    <dl>
+      <dd><img src="{{ i.get('url') }}"/></dd>
+      <dd><p>{{ i.get('title') }}</p></dd>
+      <dd><p>{{ i.get('publish_time') }}</p></dd>
+    </dl>
+  </div>
+  {% end %}
+{% end %}
+</div>
+{% end %}
+{% block leftbar %}
+    {% module Template("Admin/Modules/_leftbar.html", current=2) %}
+{% end %}
+{% block script %}
+<div id="add_photos_modal" class="reveal-modal">
+  <ul id="add_photos_area" class="unstyled"></ul>
+  <button id="do_add_photos" class="success radius small button" gid="{{ gid }}">开始上传</button>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+{% end %}

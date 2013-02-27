@@ -1,4 +1,8 @@
 (function($){
+  var _xsrf = getCookie("_xsrf");
+
+  /*------- start Comments functions -------*/
+
   // Comments Action Buttons
   $('.comment-content').hover(
     function(){
@@ -82,7 +86,6 @@
         did = self.attr('did');
 
     var url = '/admin/comment/del';
-    var _xsrf = getCookie("_xsrf");
 
     $.ajax({
       type: 'POST',
@@ -95,6 +98,8 @@
 
   });
 
+  /*--------- end Comments functions --------*/
+
   // Set Publish Date AJAX
   $('.admin-diary-list .writeable').live('keydown', function(e){
     if(e.keyCode == 13){
@@ -102,8 +107,6 @@
           did = self.attr('did'),
           date = self.text();
       var url = '/admin/diary/set-date';
-      var _xsrf = getCookie("_xsrf");
-      console.log(did, date);
       $.ajax({
         type: 'POST',
         url: url,
@@ -118,6 +121,8 @@
     }
   });
 
+  /*--------- start Diary Add Photo functions --------*/
+
   // Call Add Phtot Reveal
   $("#add_photo").live('click', function(){
     $("#up_image").removeClass('success').addClass('normal').text('上传图片');
@@ -128,9 +133,9 @@
   // Photo AJAX upload
   jQuery(function(){
     if($("#up_image").length>0){
-      var fileType = "pic",fileNum = "one";
-      var _xsrf = getCookie("_xsrf");
+      var fileType = "pic";
       new AjaxUpload('up_image', {
+        multiple: true,
         action: '/admin/diary/add-photo',
         onSubmit : function(file, ext){
           if(fileType == "pic"){
@@ -152,8 +157,107 @@
       });
     }
   });
+
+  /*--------- end Diary Add Photo functions --------*/
+
+  /*--------- start Gallary functions --------*/
+
+  // call add gallary reveal
+  $("#call_add_gallary_modal").live('click', function(){
+    var modal = $("#gallary_add_modal");
+    modal.find('input, textarea').val('');
+    modal.reveal();
+  });
+
+  // Do add gallary submit
+  $('#do_add_gallary').live('click', function(){
+    var modal = $("#gallary_add_modal"),
+        title = modal.find('input').val(),
+        desc  = modal.find('textarea').val(); 
+
+    var url = '/admin/gallary/add';
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data:{title:title, desc:desc, _xsrf:_xsrf},
+      success: function(e){
+        window.location.reload();
+      }
+    });
+  });
+
+  // call add photos reveal
+  $("#call_add_photos_modal").live('click', function(){
+    var modal = $("#add_photos_modal");
+    modal.reveal();
+  });
+
+  // call add photos use fineuploader
+  $(document).ready(function() {
+    var errorHandler = function(event, id, fileName, reason) {
+      qq.log("id: " + id + ", fileName: " + fileName + ", reason: " + reason);
+    };
+    var fileNum = 0;
+    var gid = $('#do_add_photos').attr('gid');
+
+    $('#add_photos_area').fineUploader({
+      autoUpload: false,
+      uploadButtonText: "Select Files",
+      request: {
+        endpoint: "/admin/gallary/add-photo"
+      }
+    }).on('submit', function(event, id, filename){
+      $(this).fineUploader('setParams', {'_xsrf': _xsrf, 'gid': gid});
+    }).on('complete', function(event, id, filename, responseJSON){
+    }).on('error', errorHandler);
+
+    $('#do_add_photos').click(function() {
+      $('#add_photos_area').fineUploader("uploadStoredFiles");
+    });
+
+  });
+
+  /*--------- end Gallary functions --------*/
+
+  /*--------- start Category functions --------*/
+
+  // cal new category modal
+  $("#categories_select").live('change', function(){
+    var self = $(this);
+    if(self.val() === '创建新分类'){
+      $("#add_category_input").val('');
+      var modal = $("#add_category_modal");
+      modal.reveal();
+    }else{
+      var cid = self.find(':selected').attr('cid');
+      $("#category_id").val(cid);
+    }
+  });
   
-  /*------=========== jQuery Functions ============------*/
+  // do add new category
+  $("#do_add_category").live('click', function(){
+    var cat = $("#add_category_input").val(),
+        url = '/admin/category/add';
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: {category:cat, _xsrf:_xsrf},
+      success: function(data){
+        var obj = $.parseJSON(data);
+        if(obj.success === 'true'){
+          $("#category_id").val(obj.cid);
+          $('#categories_select :selected').text(cat);
+          $('#categories_select').append('<option>创建新分类</option>');
+          $("#add_category_modal").trigger('reveal:close');
+        }else{
+          alert('数据库返回错误');
+        }
+      }
+    });
+  });
+  /*--------- end Category functions --------*/
+  
+  /*------=========== jQuery Functions ==========-----*/
 
   // Get time
   function getTime(){
@@ -172,12 +276,11 @@
   function jsTimeFix(time){
     if(time<10) return "0"+time;
     else return time;
-  }
+  };
 
   // AJAX Comment Reply Function
   function reply(cid, did, email, title, content, user) {
       var url = '/admin/comment/reply';
-      var _xsrf = getCookie("_xsrf");
       $.ajax({
         type: 'POST',
         url: url,
@@ -190,5 +293,7 @@
       var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
       return r ? r[1] : undefined;
   };
+
+  /*------=========== end jQuery functions ==========-----*/
 
 })(jQuery);

@@ -2,26 +2,22 @@
 {% block title %} 日志列表 {% end %}
 
 {% block content %}
-  <div class="diary-list">
+<div id="content-container">
   {% for i in diaries %}
-    <div class="single-diary">
-      <div class="content">
-      <div class="title">
-          <h4><a href="/diary/detail/{{ i.get('_id')}}" class="diary-title" title="{{ escape(i.get('title')) }}" target="_blank">{{ escape(i.get('title')) }}</a></h4><div class="publish-time">{{ i.get('publish_time') }}</div>
-      </div>
-      <div class="summary">
-        {{ escape(i.get('summary')) }}
-      </div>
-      </div>
-    </div>
-  {% end %}
-    <div class="page-navi">
-      {% if int(page)-1 > 0 %}
-        <a href='/diary/list/{{ int(page)-1 }}' class="page-prev">上一页</a>
-      {% end %}
-      {% if next_page == True %}
-       <a href='/diary/list/{{ int(page)+1 }}' class="page-next">下一页</a>
-      {% end %}
+  <div class="post">
+    <h1><a class="post-title" href="/diary/detail/{{ i.get('_id')}}" title="{{ escape(i.get('title')) }}">{{ escape(i.get('title')) }}</a></h1>
+    <div class="author"><span>Author:</span> <a>{{ profile.get('name')}}</a>&nbsp;<span>Posted:</span> {{ i.get('publish_time') }}</div>
+
+    <p>{{ i.get('summary') }}</p>
+    <p>详细阅读... <a href="/diary/detail/{{ i.get('_id')}}" class="more-link">(more…)</a></p>
+
+    <div class="post-comment-entice">
+      <p><span class="post-comments"><a href="/diary/detail/{{ i.get('_id')}}">{% if i.get('comments_count') is None %} 0 {% else %} {{ i.get('comments_count') }} {% end %} Comments </a></span></p>
     </div>
   </div>
+  {% end %}
+</div>
+<div id="bottom-paging">
+   {% if int(page)-1 > 0 %}<a href="/diary/list/{{ int(page)-1 }}">« Newer Posts</a>{% end %} — {% if next_page == True %}<a href="/diary/list/{{ int(page)+1 }}">Older Posts »</a>{% end %}
+</div>  
 {% end %}

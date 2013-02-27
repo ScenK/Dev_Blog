@@ -1,18 +1,5 @@
 (function($){
 
-  // Profile Slide
-  $('.avatar').live('click', function(){
-    $('.profile').slideToggle('fast');
-  });
-
-  // AJAX Load More 
-  $('.load-more').live('click', function(){
-    var self   = $(this),
-        offset = parseInt(self.attr('offset'));
-    if(self.text() !== '没有更多文章了...')
-      loadMore(self, offset);
-  });
-
   // Comment Add Check
   $('#comment_add_form_btn').live('click', function(){
     var self = $(this);
@@ -44,7 +31,7 @@
         });
         var time = getTime();
         var html = buildCommentHtml(name, time, comment);
-        $('<div class="single-diary comments new-comment"></div>').appendTo('.comments-area');
+        $('<li class="alt new-comment"></li>').appendTo('.commentlist');
         $('body').animate({ scrollTop: $('.new-comment:last-child').offset().top - 200}, 900);
         $('.new-comment:last-child').hide().append(html).fadeIn(4000);
         u_comment.val('');
@@ -67,21 +54,54 @@
     $('#___gcse_0').fadeOut().removeClass('gsc-results-wrapper-visible');
   });
 
-  // Comment testarea auto height
-  $('#comment_add_form textarea').live('keydown', function(e){
-    var self = $(this);
-    if(e.keyCode == 13){
-      self.height(self.height()+15);
-    };
-  });
-
   // auto img-position fix
   $(document).ready(function(){
     if($('p img').length > 0)
-      $('p img').parent().css('text-align', 'center');
+    $('p img').parent().css('text-align', 'center');
   });
 
+  // gallary page funciton
+  $(document).ready(function() {
 
+    //blocksit define
+    $(window).load(function() {
+      $('#colum-container').BlocksIt({
+        numOfCol: 5,
+        offsetX: 8,
+        offsetY: 8
+      });
+    });
+
+    //window resize
+    var currentWidth = 1200;
+    $(window).resize(function() {
+      var winWidth = $(window).width();
+      var conWidth;
+      if(winWidth < 660) {
+        conWidth = 480;
+        col = 2
+      } else if(winWidth < 960) {
+        conWidth = 720;
+        col = 3
+      } else if(winWidth < 1200) {
+        conWidth = 960;
+        col = 4;
+      } else {
+        conWidth = 1200;
+        col = 5;
+      }
+
+      if(conWidth != currentWidth) {
+        currentWidth = conWidth;
+        $('#colum-container').width(conWidth);
+        $('#colum-container').BlocksIt({
+          numOfCol: col,
+          offsetX: 8,
+          offsetY: 8
+        });
+      }
+    });
+  }); 
   /*=======jQuery Functions===============*/
   
   // Get time
@@ -106,40 +126,15 @@
   // Comment HTML
   function buildCommentHtml(name, time, content){
     var html="";
-    html += '<div class="content"><div class="line-one"><b>' +
-            name +
-            '</b><span>' +
-            time + 
-            '</span></div><div class="line-two">' +
+    html += '<small class="commentmetadata"><a>' +
+            time +
+            '</a></small><cite>' +
+            name + 
+            '<span>:</span></cite><div class="comment-content"><p>' +
             content +
-            '</div></div>';
+            '</p></div>';
     return html;
   };
-
-  // Path Function
-  $(function(){
-    var delay = 40, delayTime, btns = $('.btn');
-    $('#base-button').toggle(function(){
-      $(this).addClass('open');
-      btns.each(function(i){
-        delayTime = i * delay;
-        var ele = $(this);
-        window.setTimeout(function(){
-          ele.addClass('open');
-        }, delayTime);
-      });
-    }, function(){
-      $(this).removeClass('open');
-      var ii = 0;
-      $($(btns).get().reverse()).each(function(i){
-        delayTime = i * delay;
-        var ele = $(this);
-        window.setTimeout(function(){
-          ele.removeClass('open');
-        }, delayTime);
-      });
-    });
-  });
 
   // Empty Check Function
   function emptyCheck(array){
@@ -170,35 +165,11 @@
     }
   };
 
-
-  // Ajax Load More Function
-  function loadMore(self, offset){
-
-    var url = '/diary/load';
-
-    $.getJSON(url, {offset: offset}, function(e){
-      if(e.length != 0){
-        $.each(e, function(i, v){
-          var new_diary = $('.single-diary').first().clone()
-                                    .appendTo('.home');
-          var obj = $.parseJSON(v);
-          new_diary.find('.diary-title').empty().html(obj.title).attr({'href': '/diary/detail/'+obj._id, 'title': obj.title});
-          new_diary.find('.summary').empty().html(obj.summary);
-          new_diary.find('.publish-time').empty().html(obj.publish_time);
-        });
-        offset += 3;
-        self.remove().appendTo('.home').attr('offset', offset);
-      }
-      else{
-        self.text('没有更多文章了...');
-      }
-    });
-  }; 
-
-  // AJAX Get Cookie Function 
+  // Get Cookie Function 
   function getCookie(name) {
       var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
       return r ? r[1] : undefined;
   };
+
 
 })(jQuery);

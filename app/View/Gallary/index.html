@@ -1,0 +1,23 @@
+{% extends "../base.html" %}
+{% block title %} 图片馆 {% end %}
+{% block main %}
+<div class="board-layout">
+  <div id="colum-container">
+    {% for i in albums %}
+      {% if i.get('content') is not None %}
+        {% for c in i.get('content') %}
+        <div class="single-photo">
+          <a class="pin-image" title="{{ c.get('title') }}"><img src="{{ c.get('url') }}"></a>
+          <div class="desc">
+            <a class="avatar"><img src='{{ profile.get('avatar') }}'/></a>
+            <div class="no-image">
+              <div class="name"><a>{{ profile.get('name') }}</a></div>
+              <div class="time">{{ c.get('publish_time') }}</div></div>
+            </div>
+        </div>
+        {% end %}
+      {% end %}
+    {% end %}
+  </div>
+</div>
+{% end %}

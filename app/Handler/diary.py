@@ -5,6 +5,7 @@ import tornado.web
 from Model.accounts import Account
 from Model.diaries import Diary
 from Model.comments import Comment
+from Model.categories import Category
 from base import BaseHandler
 import json
 from lib.email_util import send_error_email
@@ -14,6 +15,7 @@ class DiaryDetailHandler(BaseHandler):
     def get(self, _id):
         try:
             detail = Diary.get_detail(_id)
+            categories = Category.get()
         except Exception as e:
             self.send_error(404)
             send_error_email('Diary Detail Error', str(e))
@@ -27,7 +29,7 @@ class DiaryDetailHandler(BaseHandler):
                guest_name = None
                guest_email = None
 
-            self.render('Diary/detail.html', detail=detail, profile=profile, guest_name=guest_name, guest_email=guest_email)
+            self.render('Diary/detail.html', detail=detail, profile=profile, guest_name=guest_name, guest_email=guest_email, categories=categories)
         else:
             self.send_error(404)
 
@@ -39,13 +41,14 @@ class DiaryListHandler(BaseHandler):
         try:
             profile = Account.get()
             diaries = Diary.get_diary_list(page)
+            categories = Category.get()
         except Exception as e:
             self.send_error(404)
             send_error_email('Diary List Error', str(e))
 
         number = diaries.count(with_limit_and_skip=True)
 
-        if number == 15:
+        if number == 5:
             next_page = True
         elif number < 1:
             self.send_error(404)
@@ -53,7 +56,7 @@ class DiaryListHandler(BaseHandler):
         else:
             next_page = False
 
-        self.render('Diary/list.html', diaries=diaries, profile=profile, page=page, next_page=next_page)
+        self.render('Diary/list.html', diaries=diaries, profile=profile, page=page, next_page=next_page, categories=categories)
 
 # AJAX Diary Load_action
 class DiaryLoadHandler(BaseHandler):

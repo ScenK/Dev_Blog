@@ -7,6 +7,9 @@ from weibo import APIClient
 from Model.admins import Admin
 from Model.diaries import Diary
 from Model.comments import Comment
+from Model.gallaries import Gallary
+from Model.categories import Category
+import json
 
 from douban_client import DoubanClient
 from Config.config import config as conf 
@@ -95,7 +98,7 @@ class AdminDiaryListHandler(BaseHandler):
             print str(e)
 
         number = diaries.count(with_limit_and_skip=True)
-        if number == 15:
+        if number == 5:
             next_page = True
         elif number < 1:
             self.send_error(404)
@@ -136,7 +139,8 @@ class AdminCommentHandler(BaseHandler):
 class DiaryAddHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        self.render('Admin/Diary/add.html')
+        categories = Category.get()
+        self.render('Admin/Diary/add.html', categories=categories)
 
     @tornado.web.authenticated
     def post(self, *args):
@@ -144,11 +148,24 @@ class DiaryAddHandler(BaseHandler):
         try:
             title = self.get_argument('title')
             content = self.get_argument('content')
+            c_name = self.get_argument('category_name')
+            c_id = self.get_argument('c_id')
         except:
             self.redirect('/diary/add')
 
+        """" determin whether there is a exist undefine category
+             if there is not, create it
+             else use its c_id
+        """
+        if c_id == 'none':
+            detail = Category.find_by_name(c_name)
+            try:
+                c_id = detail.get('_id')
+            except:
+                c_id = Category.new(c_name) 
+
         try:
-            Diary.add(title, content)
+            Diary.add(title, content, c_name, c_id)
         except Exception as e:
             print str(e)
         
@@ -173,10 +190,11 @@ class DiaryUpdateHandler(BaseHandler):
 
         try:
             detail = Diary.get_detail(_id)
+            categories = Category.get()
         except:
             self.redirect('/admin')
 
-        self.render('Admin/Diary/edit.html', detail=detail)
+        self.render('Admin/Diary/edit.html', detail=detail, categories=categories)
 
     @tornado.web.authenticated
     def post(self, *args):
@@ -185,11 +203,24 @@ class DiaryUpdateHandler(BaseHandler):
             did = self.get_argument('did')
             title = self.get_argument('title')
             content = self.get_argument('content')
+            c_name = self.get_argument('category_name')
+            c_id = self.get_argument('c_id')
         except Exception as e:
-            print str(e)
+            refer = self.request.headers.get('Referer')
+            self.redirect(refer)
         
+        """" determin whether there is a exist undefine category
+             if there is not, create it
+             else use its c_id
+        """
+        if c_id == 'none':
+            detail = Category.find_by_name(c_name)
+            try:
+                c_id = detail.get('_id')
+            except:
+                c_id = Category.new(c_name) 
         try:
-            Diary.update(did, title, content)
+            Diary.update(did, title, content, c_name, c_id)
         except Exception as e:
             print str(e)
 
@@ -217,8 +248,68 @@ class DiaryAddPhotoHandler(BaseHandler):
     def post(self, *args):
         data = self.request.files['userfile']
         try:
-          url = Diary.up_to_upyun(data[0])
+          url = Gallary.up_to_upyun('diary', data[0])
           self.write('![](%s)' % str(url))
         except Exception as e:
           print str(e)
 
+# Gallary_page 
+class AdminGallaryHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        gallaries = Gallary.get_all()
+        self.render('Admin/Gallary/index.html', gallaries=gallaries)
+
+# Gallary_add_page 
+class AdminGallaryAddHandler(BaseHandler):
+    @tornado.web.authenticated
+    def post(self, *args):
+        title = self.get_argument('title')
+        desc = self.get_argument('desc')
+        try:
+            Gallary.add(title, desc)
+        except Exception as e:
+          print str(e)
+
+# Gallary_detail_page 
+class AdminGallaryDetailHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, _id):
+        try:
+            photos = Gallary.get_detail(_id)
+            self.render('Admin/Gallary/detail.html', photos=photos, gid=_id)
+        except Exception as e:
+          print str(e)
+
+# Gallary_add_photo_action 
+class AdminGallaryAddPhotoHandler(BaseHandler):
+    @tornado.web.authenticated
+    def post(self, *args):
+        files = self.request.files['qqfile']
+        gid = self.get_argument('gid')
+        for i in files:
+            try:
+              url = Gallary.up_to_upyun('gallary', i)
+              if url:
+                  Gallary.save_photo(gid, url, i.get('filename'))
+                  self.write(json.dumps({'success': 'true'}))
+              else:
+                  self.write(json.dumps({'success': 'false'}))
+            except Exception as e:
+              print str(e)
+
+# Category_new_action 
+class AdminCategoryAddHandler(BaseHandler):
+    @tornado.web.authenticated
+    def post(self, *args):
+        category = self.get_argument('category')
+
+        try:
+          cid = Category.new(category)
+        except Exception as e:
+          print str(e)
+
+        if cid:
+          self.write(json.dumps({'success': 'true', 'cid': cid}))
+        else:
+          self.write(json.dumps({'success': 'false'}))

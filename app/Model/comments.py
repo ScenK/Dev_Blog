@@ -24,7 +24,7 @@ class Comment(object):
 
         comment = {
                 "_id": Kid.kid(), 
-                "did": did,
+                "did": int(did),
                 "user": user,
                 "email": email,
                 "content": content,
@@ -58,8 +58,8 @@ class Comment(object):
 
         comment = {
                 "_id": Kid.kid(), 
-                "did": did,
-                "parent_id": cid,
+                "did": int(did),
+                "parent_id": int(cid),
                 "user": "博主回复",
                 "content": content,
                 "publish_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")

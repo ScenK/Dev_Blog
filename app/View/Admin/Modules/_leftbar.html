@@ -12,7 +12,14 @@
         </li>
       </ul>
     </li>
-    <li {% if current == 2 %} class='active' {% end %}><a href="#">相册</a></li>
+    <li {% if current == 2  or current == 2.1 %} class='active' {% end %}>
+      <a href="/admin/gallary/all-gallary">相册</a>
+      <ul{% if current == 2 or current == 2.1 %}{% else %} class='hide' {% end %}>
+        <li {% if current == 2 %} class='active' {% end %}>
+          <a href="/admin/gallary/all-gallary">所有相册</a>
+        </li>
+      </ul>
+    </li>
     <li {% if current == 3 %} class='active' {% end %}><a href="#">统计</a></li>
     <li {% if current == 4 %} class='active' {% end %}><a href="#">用户</a></li>
     <li {% if current == 5 %} class='active' {% end %}><a href="/admin/settings">设置</a></li>

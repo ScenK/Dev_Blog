@@ -7,12 +7,21 @@
 	<legend>编辑文章</legend>
     {{ xsrf_form_html() }}
     <label>题目:</label>
-    <input type="hidden" name="did" value="{{ detail.get('_id')}}">
+    <input type="hidden" name="did" value="{{ detail.get('_id') }}">
+    <input type="hidden" name="c_id" id="category_id" value="{{ detail.get('category_id') if detail.get('category_id') else 'none'}}">
     <input type="text" name="title" value="{{ detail.get('title')}}">
-
-    <ul class="button-group radius right">
-        <li><a href="javascript:void(0)"  class="tiny secondary button radius" id="add_photo">图片</a></li>
-    </ul>
+    <div class="diary-action">
+      <label for="categories_select">文章分类:</label>
+      <select name="category_name" id="categories_select" style="width:148px;">
+        <option selected="selected">{{ detail.get('category') if detail.get('category') else '未分类'}}</option>
+        {% for c in categories %}
+        <option cid="{{ c.get('_id') }}">{{ c.get('name') }}</option>
+        {% end %}
+        <option>创建新分类</option>
+      </select>
+      <a href="javascript:void(0)"  class="tiny secondary button radius right" id="add_photo">图片</a>
+    </div>
+    <br />
     <label>正文:</label>
     <textarea name="content" class="xxlarge">{{ detail.get('content')}}</textarea>
     <input type="submit" value="发表" class="round small button">
@@ -27,6 +36,12 @@
   <h2>添加图片.</h2>
   <button id="up_image" class="normal radius small button">上传图片</button>
   <input type="text" id="up_image_bak_url" />
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+<div id="add_category_modal" class="reveal-modal">
+  <label>分类名称:</label>
+  <input type="text" id="add_category_input" />
+  <button id="do_add_category" class="normal radius small button">确定</button>
   <a class="close-reveal-modal">&#215;</a>
 </div>
 {% end %}

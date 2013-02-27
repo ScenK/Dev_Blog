@@ -12,11 +12,15 @@ from Handler.diary import DiaryListHandler,\
 from Handler.admin import AdminHandler, LoginHandler, LogoutHandler, AdminDiaryListHandler,\
                           AdminSettingsHandler, AdminCommentHandler,DiaryAddHandler,\
                           DiaryDelHandler, DiaryUpdateHandler, DiarySetDateHandler,\
-                          DiaryAddPhotoHandler
-                              
+                          DiaryAddPhotoHandler, AdminGallaryHandler, AdminGallaryAddHandler,\
+                          AdminGallaryDetailHandler, AdminGallaryAddPhotoHandler,\
+                          AdminCategoryAddHandler
 from Handler.comment import CommentAddHandler, CommentDelHandler,\
                             CommentReplyHandler
+from Handler.gallary import GallaryHandler
+from Handler.category import CategoryListHandler 
 from Handler.error import ErrorHandler
+from Handler.static import AboutHandler
 
 urls = [
     (r'/', HomeHandler),
@@ -25,6 +29,8 @@ urls = [
     (r'/login', LoginHandler),
     (r'/logout', LogoutHandler),
     (r'/feed', DiaryRssHandler),
+    (r'/gallary', GallaryHandler),
+    (r'/about', AboutHandler),
 
     (r'/diary/add', DiaryAddHandler),
     (r'/diary/load', DiaryLoadHandler),
@@ -41,7 +47,15 @@ urls = [
     (r'/admin/comments/all-comment/([0-9]+)', AdminCommentHandler),
     (r'/admin/comment/del', CommentDelHandler),
     (r'/admin/comment/reply', CommentReplyHandler),
+    (r'/admin/gallary/all-gallary', AdminGallaryHandler),
+    (r'/admin/gallary/add', AdminGallaryAddHandler),
+    (r'/admin/gallary/detail/([0-9]+)', AdminGallaryDetailHandler),
+    (r'/admin/gallary/add-photo', AdminGallaryAddPhotoHandler),
+    (r'/admin/category/add', AdminCategoryAddHandler),
 
     (r'/comment/add', CommentAddHandler),
+
+    (r'/category/([0-9]+)', CategoryListHandler),
+
     (r'.*', ErrorHandler),
 ]
