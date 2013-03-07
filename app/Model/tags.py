@@ -2,7 +2,6 @@
 #coding=utf-8
 
 import datetime
-from diaries import Diary
 from lib.kid import Kid
 from Config.config import config as conf 
 
@@ -13,29 +12,55 @@ class Tag(object):
         pass
 
     @staticmethod
-    def save(did, user, email, content):
-    
-        diary_detail = Diary.get_detail(did)
+    def get():
+      return db.tags.find()
 
-        # init comments_count in single-diary
-        comments_count = diary_detail.get('comments_count')
-        if comments_count is None:
-            comments_count = 0
+    @staticmethod
+    def find_by_name(name):
+        return db.tags.find_one({'name': name})
 
-        comment = {
-                "_id": Kid.kid(), 
-                "did": did,
-                "user": user,
-                "email": email,
-                "content": content,
-                "publish_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                }
+    @staticmethod
+    def add(tag, diary):
 
-        db.diaries.update({'_id': int(did)}, {'$inc': {'comments_count': 1}, 
-                                         '$push': {'comment': comment}})
+        exist_tag = Tag.find_by_name(tag)
 
-        # Save in Comments Collection for Admin 
-        diary_title = diary_detail.get('title')
-        comment['diary_title'] = diary_title
-        db.comments.save(comment)
+        """ first determine whether there is an exist tag
+            if there is, update from old tag then add diary in it,
+            else, create a new tag
+        """
+
+        if exist_tag is None:
+            new_tag = {
+                       "_id": Kid.kid(),
+                       "name": tag,
+                       "diaries_num": 0,
+                       "publish_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                      }
+
+            db.tags.save(new_tag)
+            tid = new_tag.get('_id')
+        else:
+            tid = exist_tag.get('_id')
+
+        Tag.add_diary(tid, diary.get('_id'), diary.get('title'), diary.get('publish_time'))
         return
+
+    @staticmethod
+    def add_diary(_id, did, title, dtime):
+
+        diary = {
+                "_id": Kid.kid(),
+                "did": int(did),
+                "title": title,
+                "publish_time": dtime
+              }
+
+        return db.tags.update({'_id': int(_id)}, {'$inc': {'diaries_num': 1}, '$push': {'diaries': diary}})
+
+    @staticmethod
+    def find_by_id(_id):
+        return db.tags.find_one({'_id': int(_id)})
+
+    @staticmethod
+    def del_diary(did):
+        return db.tags.update({'diaries.did': int(did)}, {'$inc': {'diaries_num': -1}, '$pull': {'diaries': {'did': int(did)}}})

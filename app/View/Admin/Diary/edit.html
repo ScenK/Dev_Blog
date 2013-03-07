@@ -2,14 +2,14 @@
 {% block title %} 编辑日志 {% end %}
 {% block content %}
 <h5 class="no-marg-top subheader">在此进行您的文章修改。</h5>
-<form action="" method="post">
+<form action="" method="post" id="add_post_form" class="post_edit">
   <fieldset>
 	<legend>编辑文章</legend>
     {{ xsrf_form_html() }}
     <label>题目:</label>
     <input type="hidden" name="did" value="{{ detail.get('_id') }}">
     <input type="hidden" name="c_id" id="category_id" value="{{ detail.get('category_id') if detail.get('category_id') else 'none'}}">
-    <input type="text" name="title" value="{{ detail.get('title')}}">
+    <input type="text" name="title" value="{{ detail.get('title')}}" id="post_title">
     <div class="diary-action">
       <label for="categories_select">文章分类:</label>
       <select name="category_name" id="categories_select" style="width:148px;">
@@ -24,6 +24,8 @@
     <br />
     <label>正文:</label>
     <textarea name="content" class="xxlarge">{{ detail.get('content')}}</textarea>
+    <label>标签:( 涉及到站内搜索, 请尽可能详细的描述文章中的关键词,并使用<strong>英文逗号</strong>分隔 )</label>
+    <input name="tags" type="text" value="{% for i in detail.get('tags') if detail.get('tags') is not None else '' %}{{ i }},{% end %}"/> 
     <input type="submit" value="发表" class="round small button">
   </fieldset>
 </form>

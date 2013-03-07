@@ -10,7 +10,7 @@ from Handler.diary import DiaryListHandler,\
                           DiaryDetailHandler,\
                           DiaryLoadHandler, DiaryRssHandler
 from Handler.admin import AdminHandler, LoginHandler, LogoutHandler, AdminDiaryListHandler,\
-                          AdminSettingsHandler, AdminCommentHandler,DiaryAddHandler,\
+                          AdminCategoryHandler, AdminCommentHandler,DiaryAddHandler,\
                           DiaryDelHandler, DiaryUpdateHandler, DiarySetDateHandler,\
                           DiaryAddPhotoHandler, AdminGallaryHandler, AdminGallaryAddHandler,\
                           AdminGallaryDetailHandler, AdminGallaryAddPhotoHandler,\
@@ -19,8 +19,10 @@ from Handler.comment import CommentAddHandler, CommentDelHandler,\
                             CommentReplyHandler
 from Handler.gallary import GallaryHandler
 from Handler.category import CategoryListHandler 
+from Handler.tag import TagListHandler
 from Handler.error import ErrorHandler
 from Handler.static import AboutHandler
+from Handler.search import SearchHandler
 
 urls = [
     (r'/', HomeHandler),
@@ -39,7 +41,7 @@ urls = [
 
     (r'/admin', AdminHandler),
     (r'/admin/all-post/([0-9]+)', AdminDiaryListHandler),
-    (r'/admin/settings', AdminSettingsHandler),
+    (r'/admin/category', AdminCategoryHandler),
     (r'/admin/diary/edit/([0-9]+)', DiaryUpdateHandler),
     (r'/admin/diary/del/([0-9]+)', DiaryDelHandler),
     (r'/admin/diary/set-date', DiarySetDateHandler),
@@ -56,6 +58,10 @@ urls = [
     (r'/comment/add', CommentAddHandler),
 
     (r'/category/([0-9]+)', CategoryListHandler),
+
+    (r'/tag/([0-9a-zA-Z_%^\s]+)', TagListHandler),
+
+    (r'/search', SearchHandler),
 
     (r'.*', ErrorHandler),
 ]

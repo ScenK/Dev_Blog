@@ -10,6 +10,7 @@ from lib.kid import Kid
 import PyRSS2Gen
 import markdown
 from categories import Category
+from tags import Tag
 
 db = conf.site_config()['db']
 conf = conf.site_config()
@@ -33,7 +34,7 @@ class Diary(object):
         return
 
     @staticmethod
-    def update(_id, title, content, c_name, c_id):
+    def update(_id, title, content, c_name, c_id, tags):
         summary = content[0:80] + '...'
         html = markdown.markdown(content)
         diary = {
@@ -41,6 +42,7 @@ class Diary(object):
                 "content": content,
                 "category": c_name,
                 "category_id": int(c_id),
+                "tags": tags,
                 "summary": markdown.markdown(summary),
                 "html": html,
                 "update_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -48,12 +50,23 @@ class Diary(object):
 
         publish_time = Diary.get_detail(_id).get('publish_time') 
         last_cid = Diary.get_detail(_id).get('category_id') 
+        last_tags = Diary.get_detail(_id).get('tags') 
 
         db.diaries.update({'_id': int(_id)}, {'$set': diary})
 
         #Save for category
         Category.update_diary(c_id, _id, title, publish_time, last_cid)
-        return
+
+        if last_tags is not None:
+            # delete it from old tags
+            Tag.del_diary(_id)
+        
+        if tags is not None:
+            diary = Diary.get_detail(_id)
+            # save tags
+            for tag in tags:
+                Tag.add(tag, diary)
+        return 
 
     #Design For Link Douban Diary 
     @staticmethod
@@ -74,9 +87,7 @@ class Diary(object):
         return collection
 
     @staticmethod
-    def add(title, content, c_name, c_id):
-        diaries = db.diaries
-
+    def add(title, content, c_name, c_id, tags):
         summary = content[0:80] + '...'
         html = markdown.markdown(content)
 
@@ -85,13 +96,21 @@ class Diary(object):
                 "title": title,
                 "category": c_name,
                 "category_id": int(c_id),
+                "tags": tags,
                 "content": content,
                 "html": html,
-                "summary": summary,
+                "summary": markdown.markdown(summary),
                 "publish_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 }
-        diaries.save(diary)
+        db.diaries.save(diary)
+
+        # save category
         Category.update_diary(c_id, diary.get('_id'), title, diary.get('publish_time'))
+
+        if tags is not None:
+            # save tags
+            for tag in tags:
+                Tag.add(tag, diary)
         return 
 
     @staticmethod

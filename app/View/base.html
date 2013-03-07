@@ -4,13 +4,6 @@
     <meta type="utf-8">
     <meta name="keywords" content="{{ escape(handler.settings['keywords']) }}">
     <meta name="description" content="{{ escape(handler.settings['desc']) }}">
-    <!--[if IE]>
-    {% if handler.settings['debug'] is True %}
-      {{ static_url('css/ie-style.css') }}
-    {% else %}
-      <link rel="stylesheet" href="{{ static_url('css/ie-style.min.css') }}">
-    {% end %}
-    <![endif]-->
     <title>{% block title %}{% end %} - {{ escape(handler.settings['title']) }}</title>
     {% if handler.settings['debug'] is True %}
       <link rel="stylesheet" href="{{ static_url('css/frontend.css') }}">
@@ -21,7 +14,7 @@
   <body>
     <div id="container">
       <div id="logo">
-        <a href="/"><img src="/static/img/logo.png" width="222" height="206"></a>
+        <a href="/" title="{{ escape(handler.settings['title']) }}"></a>
         <p>不要因为工作 学习 忙碌 而忽视了生活.</p>
       </div>
       <div id="nav">
@@ -34,17 +27,28 @@
       {% block content %}
       {% end %}
       <div id="sidebar">
-        <img src="/static/img/archive.png" title="Archieve" alt="Stupid image won't show">
+        <h2>SEARCH</h2>
+        <form action="/search" method="post">
+          {{ xsrf_form_html() }}
+          <input type="text" name="keywords"/><input type="submit" value="搜索" />
+        </form>
+        <br />
+        <h2>ARCHIVES</h2>
         <ul id="side-cats">
           {% for i in categories %}
           <li class="cat-item"><a href="/category/{{ i.get('_id') }}" title="{{ i.get('name') }}">{{ i.get('name') }}({{ i.get('diaries_num') }})</a></li>
           {% end %}
         </ul>
-        <img id="recent-comments-title" src="/static/img/recentcomments.png" title="Recent Comments" alt="Stupid image won't show">
-        <ul id="recent-comments">
-          <li><a href="http://xsky.me/" title="空の領域">空の領域</a>: 小天的博客...坑爹女一枚...</li>
-          <li><a href="http://www.youmeek.com/" title="YouMeek">YouMeek</a>: Judas.n的博客...低调男一枚...</li>
-          <li><a href="javascript:void(0)" title="交换链接">交换链接</a>: 交换链接可以留言...博客收入现已均衡...谢绝下三烂的广告提供...</li>
+        <h2>LINKS</h2>
+        <ul class="recent-comments">
+          <li><a href="http://xsky.me/" title="空の領域" target="_blank">空の領域</a>: 小天的博客...坑爹女一枚...</li>
+          <li><a href="http://www.youmeek.com/" title="YouMeek" target="_blank">YouMeek</a>: Judas.n的博客...低调男一枚...</li>
+          <li><a href="mailto:he.kang@dev-engine.com" title="交换链接">交换链接</a>: 交换链接可以给我邮件...博客收入现已均衡...谢绝下三烂的广告提供...</li>
+        </ul>
+        <h2>OPEN SOURSE</h2>
+        <ul class="opensourse">
+          <li><a href="https://bitbucket.org/Scen/dev_blog/" target="_blank" title="博客Bitbucket开源代码">Bitbucket</a>: 本分支代码为Dev 版本 会有不同程度的不稳定性 使用时请注意</li>
+          <li><a href="https://github.com/ScenK/dev_blog/" target="_blank" title="博客Github开源代码">Github</a>: 本分支代码为Stable 版本 将在Dev版本主功能完成 并72小时稳定后进行合并操作</li>
         </ul>
       </div>
     </div>
@@ -54,9 +58,6 @@
     {% else %}
       <script type="text/javascript" src="{{ static_url('js/frontend.min.js') }}"></script>
       {{ handler.settings['analytics'] }}
-      {{ handler.settings['customsearch'] }}
-      <gcse:search></gcse:search>
-      <div id='cloudy' class="gsc-modal-background-image" tabindex="0"></div>
     {% end %}
   </body>
 </html>

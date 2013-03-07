@@ -1,5 +1,26 @@
 (function($){
   var _xsrf = getCookie("_xsrf");
+  /*------- start Post functions -------*/
+
+  // post add and edit empty check
+  $(document).on('submit', '#add_post_form', function(){
+    var self = $(this);
+    var title = self.find('#post_title'),
+        content = self.find('.xxlarge');
+    var flag = emptyCheck([title, content]);
+
+    if(flag == true) self.submit();
+    else return false;
+  });
+
+  // post edit auto remove ',' at last
+  $(document).ready(function(){
+    if($('.post_edit').length > 0){
+      var str = $('input[name="tags"]').val().substr(0,$('input[name="tags"]').val().length-1);
+      $('input[name="tags"]').val(str);
+    }
+  });
+  /*------- end  Post functions -------*/
 
   /*------- start Comments functions -------*/
 
@@ -14,7 +35,7 @@
   );
 
   // Call reply Reveal
-  $(".reply").live('click', function() {
+  $(document).on('click', '.reply', function(){
     var self = $(this),
         cid  = self.attr('cid'),
         did  = self.attr('did'),
@@ -45,7 +66,7 @@
   });
 
   // Commit Comment Reply
-  $('#do_reply_btn').live('click', function(){
+  $(document).on('click', '#do_reply_btn', function(){ 
     var content = $(".admin-reply-area").find('textarea').val();
     var self = $(this),
         cid  = self.attr('cid'),
@@ -75,12 +96,12 @@
   });
 
   // Cancel Reply
-  $('#cel_reply_btn').live('click', function(){
+  $(document).on('click', '#cel_reply_btn', function(){ 
     $(".admin-reply-area").fadeOut(400, function(){$(".admin-reply-area").remove()});
   });
 
   // Del Comment
-  $(".comment_del").live('click', function() {
+  $(document).on('click', '.comment_del', function(){ 
     var self = $(this),
         cid = self.attr('cid'),
         did = self.attr('did');
@@ -101,7 +122,7 @@
   /*--------- end Comments functions --------*/
 
   // Set Publish Date AJAX
-  $('.admin-diary-list .writeable').live('keydown', function(e){
+  $(document).on('keydown', '.admin-diary-list .writeable', function(e){ 
     if(e.keyCode == 13){
       var self = $(this),
           did = self.attr('did'),
@@ -124,7 +145,7 @@
   /*--------- start Diary Add Photo functions --------*/
 
   // Call Add Phtot Reveal
-  $("#add_photo").live('click', function(){
+  $(document).on('click', '#add_photo', function(){ 
     $("#up_image").removeClass('success').addClass('normal').text('上传图片');
     $('#up_image_bak_url').val('');
     $("#add_photo_modal").reveal();
@@ -163,14 +184,14 @@
   /*--------- start Gallary functions --------*/
 
   // call add gallary reveal
-  $("#call_add_gallary_modal").live('click', function(){
+  $(document).on('click', '#call_add_gallary_modal', function(){ 
     var modal = $("#gallary_add_modal");
     modal.find('input, textarea').val('');
     modal.reveal();
   });
 
   // Do add gallary submit
-  $('#do_add_gallary').live('click', function(){
+  $(document).on('click', '#do_add_gallary', function(){ 
     var modal = $("#gallary_add_modal"),
         title = modal.find('input').val(),
         desc  = modal.find('textarea').val(); 
@@ -187,7 +208,7 @@
   });
 
   // call add photos reveal
-  $("#call_add_photos_modal").live('click', function(){
+  $(document).on('click', '#call_add_photos_modal', function(){ 
     var modal = $("#add_photos_modal");
     modal.reveal();
   });
@@ -222,7 +243,7 @@
   /*--------- start Category functions --------*/
 
   // cal new category modal
-  $("#categories_select").live('change', function(){
+  $(document).on('change', '#categories_select', function(){ 
     var self = $(this);
     if(self.val() === '创建新分类'){
       $("#add_category_input").val('');
@@ -235,7 +256,7 @@
   });
   
   // do add new category
-  $("#do_add_category").live('click', function(){
+  $(document).on('click', '#do_add_category', function(){ 
     var cat = $("#add_category_input").val(),
         url = '/admin/category/add';
     $.ajax({
@@ -258,6 +279,23 @@
   /*--------- end Category functions --------*/
   
   /*------=========== jQuery Functions ==========-----*/
+
+  // Empty Check 
+  function emptyCheck(array){
+    var flag = true;
+    $.each(array, function(){
+      var self = $(this);
+      if(self.val().length == 0){
+        self.addClass('error');
+        flag = false;
+        return;
+      }else{
+        self.removeClass('error');
+        return true;
+      }
+    });
+    return flag;
+  };
 
   // Get time
   function getTime(){

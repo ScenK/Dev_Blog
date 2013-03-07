@@ -24,8 +24,7 @@ SETTINGS = dict(
     autoescape = None,
     xsrf_cookies = True,
     debug = config['debug'],
-    analytics = config['analytics'],
-    customsearch = config['customsearch']
+    analytics = config['analytics']
 )
 application = tornado.web.Application(
                     handlers = urls,

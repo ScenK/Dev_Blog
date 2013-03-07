@@ -1,0 +1,24 @@
+{% extends "../base.html" %}
+{% block title %} 搜索结果 {% end %}
+{% block content %}
+<div id="content-container">
+  {% if detail is not None %}
+    {% for i in detail %}
+    <div class="post">
+      <h1><a class="post-title" href="/diary/detail/{{ i.get('did')}}" title="{{ escape(i.get('title')) }}">{{ escape(i.get('title')) }}</a></h1>
+      <div class="author"><span>作者:</span> <a>{{ profile.get('name')}}</a>&nbsp;<span>日期:</span> {{ i.get('publish_time') }}</div>
+
+      <p>详细阅读... <a href="/diary/detail/{{ i.get('did')}}" class="more-link">(more…)</a></p>
+
+    </div>
+    {% end %}
+  {% else %}
+    <div class="post">
+      <h1>没有找到...</h1>
+
+      <p>没有查询到匹配关键词,请尝试更改关键词搜索...或者给博主留言,告知您搜索的关键字...谢谢.</p>
+
+    </div>
+  {% end %}
+</div>
+{% end %}

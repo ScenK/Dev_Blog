@@ -1,0 +1,9 @@
+{% extends "../base.html" %}
+{% block title %} 分类管理 {% end %}
+{% block content %}
+<h5 class="no-marg-top subheader">在此对您的分类进行管理。</h5>
+
+{% end %}
+{% block leftbar%}
+    {% module Template("Admin/Modules/_leftbar.html", current=4) %}
+{% end %}

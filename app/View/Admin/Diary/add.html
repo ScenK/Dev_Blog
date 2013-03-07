@@ -2,12 +2,12 @@
 {% block title %} 添加日志 {% end %}
 {% block content %}
 <h5 class="no-marg-top subheader">在此进行您的文章编辑。</h5>
-<form action="" method="post" class="custom">
+<form action="" method="post" class="custom" id="add_post_form">
   <fieldset>
 	<legend>添加新文章</legend>
     {{ xsrf_form_html() }}
     <label>题目:</label>
-    <input type="text" name="title">
+    <input type="text" name="title" id="post_title">
     <input type="hidden" name="c_id" id="category_id" value="none">
     <div class="diary-action">
       <label for="categories_select">文章分类:</label>
@@ -18,11 +18,16 @@
         {% end %}
         <option>创建新分类</option>
       </select>
-      <a href="javascript:void(0)"  class="tiny secondary button radius right" id="add_photo">图片</a>
+      <ul class="button-group radius right">
+          <!--<li><a href="javascript:void(0);" class="tiny secondary button radius" id="add_code">代码</a></li>-->
+          <li><a href="javascript:void(0);" class="tiny secondary button radius" id="add_photo">图片</a></li>
+      </ul>
     </div>
     <br />
     <label>正文:</label>
     <textarea name="content" class="xxlarge"></textarea>
+    <label>标签:( 涉及到站内搜索, 请尽可能详细的描述文章中的关键词,并使用<strong>英文逗号</strong>分隔 )</label>
+    <input name="tags" type="text" /> 
     <input type="submit" value="发表" class="round small button">
   </fieldset>
 </form>

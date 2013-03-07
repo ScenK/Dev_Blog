@@ -5,7 +5,7 @@
 <div id="content-container">
   <div class="post">
     <h1><a class="post-title" href="/diary/detail/{{ detail.get('_id')}}" title="{{ escape(detail.get('title')) }}">{{ escape(detail.get('title')) }}</a></h1>
-    <div class="author"><span>Author:</span> <a>{{ profile.get('name')}}</a>&nbsp;<span>Posted:</span> {{ detail.get('publish_time') }}</div>
+    <div class="author"><span>作者:</span> <a>{{ profile.get('name')}}</a>&nbsp;<span>日期:</span> {{ detail.get('publish_time') }}&nbsp;<span>标签:</span> {% for t in detail.get('tags') if detail.get('tags') is not None else '' %}<a href="/tag/{{ t }}" title="{{ t }}">{{ t }}</a> {% end %}</div>
     <p></p>
     <div class="summary" {% if detail.get('html') is None %}style="white-space: pre-wrap"{% end %}>
       {{ detail.get('html') if detail.get('html') else detail.get('content') }}
@@ -16,7 +16,7 @@
             <li><a href="/category/{{ detail.get('category_id') }}" title="{{ detail.get('category') }}" rel="category tag">{{ detail.get('category') }}</a></li>
         </ul>
       </span>
-      <span class="post-comments">&nbsp;&nbsp;Comments: <a>({% if detail.get('comments_count') is None %} 0 {% else %} {{ detail.get('comments_count') }} {% end %})</a></span>
+      <span class="post-comments">&nbsp;&nbsp;评论: <a>({% if detail.get('comments_count') is None %} 0 {% else %} {{ detail.get('comments_count') }} {% end %})</a></span>
       </div>
   </div>
   <h3 id="comments">{% if detail.get('comments_count') is None %} 0 {% else %} {{ detail.get('comments_count') }} {% end %} 个回复给 《<span>{{ escape(detail.get('title')) }}</span>》</h3>
@@ -50,13 +50,13 @@
     <input type="hidden" id="did" value="{{ detail.get('_id') }}">
 
     <p>
-      <input type="text" class="username" value="{% if guest_name is not None %} {{guest_name}} {% end %}" size="22" tabindex="1">
-      <label for="author"><small><strong>Full Name</strong> (必填)</small></label>
+      <input type="text" class="username" value="{% if guest_name is not None %}{{guest_name}}{% end %}" size="22" tabindex="1">
+      <label for="author"><small><strong>称呼</strong> (必填)</small></label>
     </p>
 
     <p>
-      <input type="text" class="email" value="{% if guest_email is not None %} {{guest_email}} {% end %}" size="22" tabindex="2">
-      <label for="email"><small>Mail (will not be published) (必填)</small></label>
+      <input type="text" class="email" value="{% if guest_email is not None %}{{guest_email}}{% end %}" size="22" tabindex="2">
+      <label for="email"><small>邮箱 (用于接收回复邮件) (必填)</small></label>
     </p>
 
     <p>
@@ -64,7 +64,7 @@
     </p>
 
     <p>
-      <input type="button" id="comment_add_form_btn" tabindex="5" value="提交">
+      <input type="button" id="comment_add_form_btn" tabindex="5" value="提交" class="small blue-button">
     </p>
   </form>
 </div>

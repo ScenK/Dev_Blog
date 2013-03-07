@@ -22,9 +22,6 @@ class config():
         conf['analytics'] = '''<script type="text/javascript">
                                 </script>
                             '''
-        conf['customsearch'] = '''<script type="text/javascript">
-                                </script>
-                            '''
         conf['douban_app_key'] = ''
         conf['douban_app_secret'] = ''
         conf['weibo_app_key'] = ''

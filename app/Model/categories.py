@@ -52,6 +52,7 @@ class Category(object):
               }
 
         db.categories.update({'_id': int(_id)}, {'$inc': {'diaries_num': 1}, '$push': {'diaries': diary}})
+        return
 
     @staticmethod
     def find_by_id(_id):

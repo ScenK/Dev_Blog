@@ -113,10 +113,16 @@ a {
 
 #logo {
   position:absolute;
-  top:0px;
-  left:-240px;
-  height:228px;
-  width:216px;
+  top: 0px;
+  left: -240px;
+  height: 228px;
+  width: 216px;
+  a{
+    display:block;
+    background: url(../img/logo.png) no-repeat top left;
+    height: 222px;
+    width: 220px;
+  }
   p{
     line-height:3.0em;
     margin-top:190px;
@@ -171,7 +177,6 @@ a {
 .post {
   padding-bottom:20px;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  code{white-space: pre-wrap;}
   img{
     max-width: 430px;
     padding: 2px;
@@ -183,6 +188,7 @@ a {
   }
   .summary{
     line-height: 25px;
+    pre, code{overflow: scroll;}
   }
   a{
     &:link  { color:#3d2d24; text-decoration:underline; }
@@ -221,6 +227,10 @@ a {
       font-weight:bold;
       color:#3d2d24;
     }
+    a{
+      text-decoration: none;
+      &:hover { text-decoration:underline; }
+    }
   }
   .post-meta  {
     text-align:right;
@@ -253,7 +263,7 @@ a {
   font-family:Arial, Helvetica, sans-serif;
   color:#f1ebe3;
   letter-spacing:1px;
-  #side-cats {
+  #side-cats{
     margin-top:8px;
     margin-bottom:25px;
     li  {
@@ -268,6 +278,16 @@ a {
       &:active  { color:#FFF; }
     }
   }
+  h2{
+    color: #FFF;
+    font-size: 14px;
+    border: none;
+    margin-bottom: 8px;
+    padding: 0;
+    font-weight: lighter;
+    letter-spacing: 4px;
+    opacity: 0.8;
+  }
 }
 
 #bottom-paging {
@@ -281,4 +301,47 @@ a {
     letter-spacing:1px;
     font-size:90%;
   }
+}
+.blue-button{
+  -webkit-transform: translateY(0);
+  -webkit-transition: -webkit-transform .2s ease-out;
+
+  -moz-transform: translateY(0);
+  -moz-transition: -moz-transform .2s ease-out;
+
+  transform: translateY(0);
+  transition: -moz-transform .2s ease-out;
+
+  position: relative;
+  top: 0;
+  background-image: -webkit-linear-gradient(#6389C1, #4369A1);
+
+  background-image: -moz-linear-gradient(#6389C1, #4369A1);
+
+  background-image: -linear-gradient(#6389C1, #4369A1);
+
+  height: 42px;
+  box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 5px 1px;
+  border: 1px solid rgba(53, 85, 131, 0.9);
+  border-radius: 2px;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.5);
+  margin-top: 0px;
+  cursor: pointer;
+  font-size: 20px;
+  font-family: Vavont, 'Helvetica Neue', Helvetica, sans-serif;
+  text-align: center;
+  line-height: 38px;
+  color: rgba(255, 255, 255, 0.99);
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  display: block;
+  padding: 2px 6px 3px;
+  overflow: hidden;
+  text-decoration: none;
+}
+.small{
+  font-size: 12px;
+  padding: 7px;
+  height: 25px;
+  line-height: 10px;
 }

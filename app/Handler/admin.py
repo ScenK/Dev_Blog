@@ -9,6 +9,7 @@ from Model.diaries import Diary
 from Model.comments import Comment
 from Model.gallaries import Gallary
 from Model.categories import Category
+from Model.tags import Tag
 import json
 
 from douban_client import DoubanClient
@@ -108,11 +109,16 @@ class AdminDiaryListHandler(BaseHandler):
 
         self.render('Admin/Diary/list.html', diaries=diaries, page=page, next_page=next_page)
 
-# Settings_page 
-class AdminSettingsHandler(BaseHandler):
+# Categorys_page 
+class AdminCategoryHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        self.render('Admin/Settings/index.html')
+        try:
+            categories = Category.get()
+        except Exception as e:
+            print str(e)
+
+        self.render('Admin/Category/index.html', categories=categories)
 
 # Comments_page 
 class AdminCommentHandler(BaseHandler):
@@ -153,6 +159,16 @@ class DiaryAddHandler(BaseHandler):
         except:
             self.redirect('/diary/add')
 
+        try:
+            tags = self.get_argument('tags')
+        except:
+            tags = None
+
+        if tags:
+            splited_tags = tags.split(',')
+        else:
+            splited_tags = None
+
         """" determin whether there is a exist undefine category
              if there is not, create it
              else use its c_id
@@ -165,7 +181,7 @@ class DiaryAddHandler(BaseHandler):
                 c_id = Category.new(c_name) 
 
         try:
-            Diary.add(title, content, c_name, c_id)
+            Diary.add(title, content, c_name, c_id, splited_tags)
         except Exception as e:
             print str(e)
         
@@ -209,6 +225,16 @@ class DiaryUpdateHandler(BaseHandler):
             refer = self.request.headers.get('Referer')
             self.redirect(refer)
         
+        try:
+            tags = self.get_argument('tags')
+        except:
+            tags = None
+
+        if tags:
+            splited_tags = tags.split(',')
+        else:
+            splited_tags = None
+
         """" determin whether there is a exist undefine category
              if there is not, create it
              else use its c_id
@@ -220,7 +246,7 @@ class DiaryUpdateHandler(BaseHandler):
             except:
                 c_id = Category.new(c_name) 
         try:
-            Diary.update(did, title, content, c_name, c_id)
+            Diary.update(did, title, content, c_name, c_id, splited_tags)
         except Exception as e:
             print str(e)
 
