@@ -1,7 +1,7 @@
 douban-client
 sinaweibopy
-pymongo
 bson
+pymongo
 Fabric
 PyRSS2Gen
 markdown

@@ -42,6 +42,7 @@
         |--- lib/                           集成脚本
             |--- kid.py                     MongoDB自增ObjectId生成器
             |--- email_util.py              SMTP邮件发送器
+            |--- upyun.py                   又拍api
         |--- fabfile/                       集成发布Fabric命令
         lib/
         README.md
@@ -61,12 +62,27 @@
     * 基础环境配好后按照requirements.txt里列出的相关软件包装好
         推荐使用pip批量安装
     * 启动相关进程(MongoDB, Nginx或裸跑Tornado)
-    * 进入dev-blog/app/
+
++ 安装简介(Ubuntu 12.04为例):
+
+    * sudo apt-get install python-pip mongodb gcc openjdk-6-jre-headless lessc
+    * cd ~/ dev_blog/
+    * sudo pip install -r requirements.txt
+    * sudo pip install tornado
+    * cd ~/dev-blog/app/
         - 拷贝 Config/config.py.sample 到 Config/config.py 并更改网站相关设置
         - 执行fab build 进行初始化部属
-        - 执行fab deploy 进行less编译和css js 压缩(需要安装lessc编译环境、java运行环境)
+        - 执行fab deploy 进行less编译和css js 压缩
         - 执行fab test 开启服务器进程(或者在Supervisor开启python多进程)
         - 每次改动的代码更新都可以使用fab update 进行服务端代码自动更新
+    * !第一次使用请连接豆瓣或者微博账号
+
+    - - - - - - - - - -
+    **注**
+
+    **如果pip批量安装成功后启动服务器脚本发现报错 跟bson有关 那么pip uninstall bson pymongo**
+    **然后重新先安装bson 再安装pymongo**
+    - - - - - - - - - -
 
 + 待完成:
     * 后端管理功能逐项添加
