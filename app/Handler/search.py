@@ -7,7 +7,6 @@ import datetime
 from Model.accounts import Account
 from Model.categories import Category
 from Model.tags import Tag
-from Model.calculates import Calculate
 from lib.email_util import send_error_email
 from operator import itemgetter
 
@@ -19,7 +18,6 @@ class SearchHandler(BaseHandler):
             keywords = None
 
         if keywords is not None:
-            Calculate.search_add_keyword(keywords)
             try:
                 categories = Category.get()
                 cate_result = Category.find_by_name(keywords)

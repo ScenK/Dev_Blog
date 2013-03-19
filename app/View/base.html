@@ -21,6 +21,7 @@
         <ul>
           <li><a href="/">Home</a></li>
           <!--<li><a href="/gallary">Gallary</a></li>-->
+          <li><a href="/feed">RSS</a></li>
           <li><a href="/about">About Me</a></li>
         </ul>
       </div>
@@ -28,9 +29,9 @@
       {% end %}
       <div id="sidebar">
         <h2>SEARCH</h2>
-        <form action="/search" method="post">
-          {{ xsrf_form_html() }}
-          <input type="text" name="keywords"/><input type="submit" value="搜索" />
+        <form action="http://google.com/search" method="get" accept-charset="utf-8" id="search_form">
+          <input class="search" type="text" name="q" results="0" autocomplete="true">
+          <input type="hidden" name="q" value="site:tuzii.me">
         </form>
         <br />
         <h2>ARCHIVES</h2>
@@ -52,6 +53,9 @@
         </ul>
       </div>
     </div>
+    <footer>
+    &copy; <a href="mailto:he.kang@dev-engine.com">Dev-engine</a>  |  Powered By Tornado and MongoDB
+    </footer>
     {% block script %}{% end %}
     {% if handler.settings['debug'] is True %}
       <script type="text/javascript" src="{{ static_url('js/frontend.js') }}"></script>

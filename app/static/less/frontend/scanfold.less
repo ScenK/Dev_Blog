@@ -288,6 +288,20 @@ a {
     letter-spacing: 4px;
     opacity: 0.8;
   }
+  #search_form{
+    .search{
+      width: 95px;
+      margin-left: -2px;
+      background-color: rgba(0,0,0,0.42);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.24), 0 1px 6px rgba(0,0,0,0.45) inset;
+      border-radius: 9px;
+      border: none;
+      padding: 0.3em 0.5em;
+      color: #c4c4c4;
+      font-size: 0.95em;
+      font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    }
+  }
 }
 
 #bottom-paging {
@@ -344,4 +358,15 @@ a {
   padding: 7px;
   height: 25px;
   line-height: 10px;
+}
+footer{
+  color: #fff;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.5);
+  text-indent: 85px;
+  a{
+    &:link { color:#b18f7c !important; text-decoration:none;}
+    &:visited  { color:#b18f7c !important; text-decoration:none; }
+    &:hover  { color:#715343; text-decoration:none; }
+    &:active { color:#3d2d24; text-decoration:none; }
+  }
 }

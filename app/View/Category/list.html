@@ -12,4 +12,11 @@
   </div>
   {% end %}
 </div>
+<div id="bottom-paging">
+    {% try %}
+        {% if int(page)-1 > 0 %}<a href="/category/{{cid}}/page/{{ int(page)-1 }}">« Newer Posts</a>{% end %} — {% if next_page == True %}<a href="/category/{{cid}}/page/{{ int(page)+1 }}">Older Posts »</a>{% end %}
+    {% except %}
+        {% if next_page == True %}<a href="/category/{{cid}}/page/2">Older Posts »</a>{% end %}
+    {% end %}
+</div>  
 {% end %}

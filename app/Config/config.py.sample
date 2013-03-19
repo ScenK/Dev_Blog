@@ -11,6 +11,7 @@ class config():
         conf = {}
 
         conf['cookie'] = "3123kdjdfkadsjlfk21321adfsad"
+        conf['dbname'] = 'dev_blog'
         conf['db'] = Connection().dev_blog
         conf['username'] = 'admin'
         conf['email'] = 'he.kang@dev-engine.com'

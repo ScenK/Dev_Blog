@@ -55,8 +55,8 @@ class Category(object):
         return
 
     @staticmethod
-    def find_by_id(_id):
-        return db.categories.find_one({'_id': int(_id)})
+    def find_by_id(_id, page=1):
+        return db.categories.find_one({'_id': int(_id)}, {'diaries': {'$slice': [-15+int(page)*15, 15]}})
 
     @staticmethod
     def del_diary(did):

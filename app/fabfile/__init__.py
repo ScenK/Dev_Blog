@@ -1,6 +1,8 @@
 #!/usr/local/bin/python
 #conding: utf-8
 
+import sys
+import os
 import re
 from fabric.api import *
 import datetime
@@ -12,6 +14,7 @@ conf = conf.site_config()
 def deploy():
     execute(lessc)
     execute(compress)
+    execute(backup_database)
 
 @task
 def test():
@@ -80,3 +83,37 @@ def lessc():
 def update():
     local("git pull")
     execute(deploy)
+
+@task
+def backup_database():
+    local("sudo rm -rf ~/mongobak")
+    local("mongodump -d %s -o ~/mongobak" % conf['dbname'])
+    local("tar -czvPf ~/%s%s.tar.gz ~/mongobak/*" % (conf['dbname'], datetime.datetime.now().strftime("%Y%m%d%H%M%S")))
+
+@task
+def count_line():
+    count = 0
+    fcount = 0
+    for root,dirs,files in os.walk(os.getcwd()):
+        for f in files:
+            # Check the sub directorys
+            fname = (root + '/'+ f).lower()
+            ext = f[f.rindex('.'):]
+            try:
+                if(exts.index(ext) >= 0):
+                    fcount += 1
+                    c = read_line_count(fname)
+                    count += c
+            except:
+                pass
+
+    print 'file count:%d' % fcount
+    print 'count:%d' % count
+
+exts = ['.py']
+def read_line_count(fname):
+    count = 0
+    with open(fname, 'r') as f:
+        for file_line in f:
+            count += 1
+        return count

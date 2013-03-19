@@ -18,7 +18,7 @@ from Handler.admin import AdminHandler, LoginHandler, LogoutHandler, AdminDiaryL
 from Handler.comment import CommentAddHandler, CommentDelHandler,\
                             CommentReplyHandler
 from Handler.gallary import GallaryHandler
-from Handler.category import CategoryListHandler 
+from Handler.category import CategoryListHandler, CategoryPagingHandler 
 from Handler.tag import TagListHandler
 from Handler.error import ErrorHandler
 from Handler.static import AboutHandler
@@ -58,6 +58,7 @@ urls = [
     (r'/comment/add', CommentAddHandler),
 
     (r'/category/([0-9]+)', CategoryListHandler),
+    (r'/category/([0-9]+)/page/([0-9]+)', CategoryPagingHandler),
 
     (r'/tag/([0-9a-zA-Z_%^\s]+)', TagListHandler),
 
