@@ -1,13 +1,13 @@
 (function($){
-  var _xsrf = getCookie("_xsrf");
+  var _xsrf = Tools.getCookie("_xsrf");
   /*------- start Post functions -------*/
 
   // post add and edit empty check
-  $(document).on('submit', '#add_post_form', function(){
+  $(document).bind('submit', '#add_post_form', function(){
     var self = $(this);
     var title = self.find('#post_title'),
         content = self.find('.xxlarge');
-    var flag = emptyCheck([title, content]);
+    var flag = Tools.emptyCheck([title, content]);
 
     if(flag == true) self.submit();
     else return false;
@@ -66,7 +66,7 @@
   });
 
   // Commit Comment Reply
-  $(document).on('click', '#do_reply_btn', function(){ 
+  $(document).on('click', '#do_reply_btn', function(){
     var content = $(".admin-reply-area").find('textarea').val();
     var self = $(this),
         cid  = self.attr('cid'),
@@ -75,7 +75,7 @@
         user = self.attr('user'),
         title = self.attr('title');
 
-    reply(cid, did, email, title, content, user);
+    Tools.reply(cid, did, email, title, content, user);
 
     $(".admin-reply-area").fadeOut(400, function(){
       var self = $(this);
@@ -88,7 +88,7 @@
       first.text('博主回复');
       second.text(content);
       third.text(title);
-      fourth.text(getTime());
+      fourth.text(Tools.getTime());
 
       copy.insertAfter(self);
       self.remove();
@@ -96,12 +96,12 @@
   });
 
   // Cancel Reply
-  $(document).on('click', '#cel_reply_btn', function(){ 
+  $(document).on('click', '#cel_reply_btn', function(){
     $(".admin-reply-area").fadeOut(400, function(){$(".admin-reply-area").remove()});
   });
 
   // Del Comment
-  $(document).on('click', '.comment_del', function(){ 
+  $(document).on('click', '.comment_del', function(){
     var self = $(this),
         cid = self.attr('cid'),
         did = self.attr('did');
@@ -122,7 +122,7 @@
   /*--------- end Comments functions --------*/
 
   // Set Publish Date AJAX
-  $(document).on('keydown', '.admin-diary-list .writeable', function(e){ 
+  $(document).on('keydown', '.admin-diary-list .writeable', function(e){
     if(e.keyCode == 13){
       var self = $(this),
           did = self.attr('did'),
@@ -145,7 +145,7 @@
   /*--------- start Diary Add Photo functions --------*/
 
   // Call Add Phtot Reveal
-  $(document).on('click', '#add_photo', function(){ 
+  $(document).on('click', '#add_photo', function(){
     $("#up_image").removeClass('success').addClass('normal').text('上传图片');
     $('#up_image_bak_url').val('');
     $("#add_photo_modal").reveal();
@@ -184,17 +184,17 @@
   /*--------- start Gallary functions --------*/
 
   // call add gallary reveal
-  $(document).on('click', '#call_add_gallary_modal', function(){ 
+  $(document).on('click', '#call_add_gallary_modal', function(){
     var modal = $("#gallary_add_modal");
     modal.find('input, textarea').val('');
     modal.reveal();
   });
 
   // Do add gallary submit
-  $(document).on('click', '#do_add_gallary', function(){ 
+  $(document).on('click', '#do_add_gallary', function(){
     var modal = $("#gallary_add_modal"),
         title = modal.find('input').val(),
-        desc  = modal.find('textarea').val(); 
+        desc  = modal.find('textarea').val();
 
     var url = '/admin/gallary/add';
     $.ajax({
@@ -208,7 +208,7 @@
   });
 
   // call add photos reveal
-  $(document).on('click', '#call_add_photos_modal', function(){ 
+  $(document).on('click', '#call_add_photos_modal', function(){
     var modal = $("#add_photos_modal");
     modal.reveal();
   });
@@ -243,7 +243,7 @@
   /*--------- start Category functions --------*/
 
   // cal new category modal
-  $(document).on('change', '#categories_select', function(){ 
+  $(document).on('change', '#categories_select', function(){
     var self = $(this);
     if(self.val() === '创建新分类'){
       $("#add_category_input").val('');
@@ -254,9 +254,9 @@
       $("#category_id").val(cid);
     }
   });
-  
+
   // do add new category
-  $(document).on('click', '#do_add_category', function(){ 
+  $(document).on('click', '#do_add_category', function(){
     var cat = $("#add_category_input").val(),
         url = '/admin/category/add';
     $.ajax({
@@ -278,60 +278,14 @@
   });
   /*--------- end Category functions --------*/
   
-  /*------=========== jQuery Functions ==========-----*/
-
-  // Empty Check 
-  function emptyCheck(array){
-    var flag = true;
-    $.each(array, function(){
-      var self = $(this);
-      if(self.val().length == 0){
-        self.addClass('error');
-        flag = false;
-        return;
-      }else{
-        self.removeClass('error');
-        return true;
-      }
-    });
-    return flag;
-  };
-
-  // Get time
-  function getTime(){
-    var date = new Date();
-    var year, month, day, hour, minute, second;
-    hour = jsTimeFix(date.getHours());
-    minute = jsTimeFix(date.getMinutes());
-    second = jsTimeFix(date.getSeconds());
-    year = date.getFullYear();
-    month = jsTimeFix(date.getMonth()+1);
-    day = jsTimeFix(date.getDate());
-    var time = year + '-' + month + '-' + day + ' ' + hour +':' + minute + ':' + second;
-    return time;
-  };
-
-  function jsTimeFix(time){
-    if(time<10) return "0"+time;
-    else return time;
-  };
-
-  // AJAX Comment Reply Function
-  function reply(cid, did, email, title, content, user) {
-      var url = '/admin/comment/reply';
-      $.ajax({
-        type: 'POST',
-        url: url,
-        data: {content:content, did:did, cid:cid, _xsrf:_xsrf, email:email, title:title, user:user}
-      });
-  };
-
-  // AJAX Get Cookie Function
-  function getCookie(name) {
-      var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
-      return r ? r[1] : undefined;
-  };
-
-  /*------=========== end jQuery functions ==========-----*/
+  /*---------page function  --------*/
+  // do add new property
+  $(document).on('click', '#do_add_property', function(){
+    var cat = $("#add_property_input").val();
+    $("#category_id").val(cat);
+    $('#categories_select :selected').text(cat);
+    $('#categories_select').append('<option>创建新分类</option>');
+    $("#add_category_modal").trigger('reveal:close');
+  });
 
 })(jQuery);

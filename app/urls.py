@@ -9,19 +9,14 @@ from Handler.wback import WbackHandler
 from Handler.diary import DiaryListHandler,\
                           DiaryDetailHandler,\
                           DiaryLoadHandler, DiaryRssHandler
-from Handler.admin import AdminHandler, LoginHandler, LogoutHandler, AdminDiaryListHandler,\
-                          AdminCategoryHandler, AdminCommentHandler,DiaryAddHandler,\
-                          DiaryDelHandler, DiaryUpdateHandler, DiarySetDateHandler,\
-                          DiaryAddPhotoHandler, AdminGallaryHandler, AdminGallaryAddHandler,\
-                          AdminGallaryDetailHandler, AdminGallaryAddPhotoHandler,\
-                          AdminCategoryAddHandler
+from Handler.admin import *
 from Handler.comment import CommentAddHandler, CommentDelHandler,\
                             CommentReplyHandler
 from Handler.gallary import GallaryHandler
-from Handler.category import CategoryListHandler, CategoryPagingHandler 
+from Handler.category import CategoryListHandler, CategoryPagingHandler
 from Handler.tag import TagListHandler
 from Handler.error import ErrorHandler
-from Handler.static import AboutHandler
+from Handler.page import AboutHandler
 from Handler.search import SearchHandler
 
 urls = [
@@ -54,6 +49,13 @@ urls = [
     (r'/admin/gallary/detail/([0-9]+)', AdminGallaryDetailHandler),
     (r'/admin/gallary/add-photo', AdminGallaryAddPhotoHandler),
     (r'/admin/category/add', AdminCategoryAddHandler),
+    (r'/admin/category/del/([0-9]+)', AdminCategoryDelHandler),
+    (r'/admin/category/detail/([0-9]+)', AdminCategoryDetailHandler),
+    (r'/admin/category/detail/del/([0-9]+)', AdminCategoryDelDiaryHandler),
+    (r'/admin/page', AdminPageHandler),
+    (r'/admin/page/add', AdminPageAddHandler),
+    (r'/admin/page/edit/([0-9]+)', AdminPageEditHandler),
+    (r'/admin/page/del/([0-9]+)', AdminPageDelHandler),
 
     (r'/comment/add', CommentAddHandler),
 
@@ -64,5 +66,5 @@ urls = [
 
     (r'/search', SearchHandler),
 
-    (r'.*', ErrorHandler),
+    (r'.*', ErrorHandler)
 ]

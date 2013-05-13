@@ -1,0 +1,27 @@
+{% extends "../base.html" %}
+{% block title %} 分类日志管理 {% end %}
+{% block content %}
+<h5 class="no-marg-top subheader">在此对您的分类日志进行管理。</h5>
+  <table class="twelve category">
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th>创建时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in categories.get('diaries') %}
+      <tr>
+        <td>{{ i.get('title') }}</td>
+        <td>{{ i.get('publish_time') }}</td>
+        <td><a href="/admin/category/detail/del/{{ i.get('did') }}">删除</a></td>
+      </tr>
+      {% end %}
+    </tbody>
+  </table>
+
+{% end %}
+{% block leftbar%}
+    {% module Template("Admin/Modules/_leftbar.html", current=4.1) %}
+{% end %}

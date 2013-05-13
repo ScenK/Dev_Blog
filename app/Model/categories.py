@@ -59,5 +59,34 @@ class Category(object):
         return db.categories.find_one({'_id': int(_id)}, {'diaries': {'$slice': [-15+int(page)*15, 15]}})
 
     @staticmethod
+    def find_all_by_id(_id):
+        return db.categories.find_one({'_id': int(_id)})
+
+    @staticmethod
     def del_diary(did):
         return db.categories.update({'diaries.did': int(did)}, {'$inc': {'diaries_num': -1}, '$pull': {'diaries': {'did': int(did)}}})
+
+    @staticmethod
+    def del_category(_id):
+       
+        """ del category make all diaries return into category=>undefined
+            and del this category
+        """
+        diaries = Category.find_all_by_id(_id).get('diaries')
+        """ try to move diaries into categpry=>undefined
+            if categpry=>undefined is not exist, create it first
+            else move into immediately
+        """
+        if Category.find_by_name('未分类'):
+            new_c_id = Category.find_by_name('未分类').get('_id')
+        else:
+            new_c_id = Category.new('未分类')
+
+        for i in diaries:
+            did = i.get('did')
+            title = i.get('title')
+            dtime = i.get('publish_time')
+            Category.update_diary(new_c_id, did, title, dtime)
+                
+        db.categories.remove({'_id': int(_id)})
+

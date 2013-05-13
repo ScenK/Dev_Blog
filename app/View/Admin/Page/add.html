@@ -1,0 +1,47 @@
+{% extends "../base.html" %}
+{% block title %} 添加静态内容 {% end %}
+{% block content %}
+<div id="page">
+  <h5 class="no-marg-top subheader">在此编辑静态页面。</h5>
+  <form action="" method="post" class="custom" id="add_post_form">
+    <fieldset>
+      <legend>新增静态页面内容</legend>
+      {{ xsrf_form_html() }}
+      <label>页面标题:</label>
+      <input type="text" name="title" id="post_title">
+      <input type="hidden" name="property" id="category_id" value="none">
+      <div class="diary-action">
+        <label for="categories_select">页面属性:('关于'页面请使用'about'作为分类名称)</label>
+        <select name="category_name" id="categories_select" style="width:148px;">
+          <option>未分类</option>
+          <option>创建新分类</option>
+        </select>
+        <ul class="button-group radius right">
+            <li><a href="javascript:void(0);" class="tiny secondary button radius" id="add_photo">图片</a></li>
+        </ul>
+      </div>
+      <br />
+      <label>正文:</label>
+      <textarea name="content" class="xxlarge"></textarea>
+      <input type="submit" value="发表" class="round small button">
+    </fieldset>
+  </form>
+</div>
+{% end %}
+{% block leftbar%}
+    {% module Template("Admin/Modules/_leftbar.html", current=5.1) %}
+{% end %}
+{% block script %}
+<div id="add_photo_modal" class="reveal-modal">
+  <h5>添加图片.</h5>
+  <button id="up_image" class="normal radius small button">上传图片</button>
+  <input type="text" id="up_image_bak_url" />
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+<div id="add_category_modal" class="reveal-modal">
+  <label>分类名称:</label>
+  <input type="text" id="add_property_input" />
+  <button id="do_add_property" class="normal radius small button">确定</button>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+{% end %}

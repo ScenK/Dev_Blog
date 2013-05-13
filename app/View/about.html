@@ -1,69 +1,13 @@
 {% extends "base.html" %}
-{% block title %} 关于我 {% end %}
+{% block title %} {{ content.get('title')}} {% end %}
 {% block content %}
 <div id="content-container">
   <div class="post">
-    <h1><a class="post-title" title="About Me">About Me</a></h1>
-    <div class="author"><span>Author:</span> <a>Sea_Kudo</a>&nbsp;<span>Posted:</span> 2013-02-22 22:37:56 </div>
+    <h1><a class="post-title" title="About Me">{{ content.get('title') }}</a></h1>
+    <div class="author">&nbsp;<span>Posted:</span> {{ content.get('publish_time') }} </div>
     <p></p>
     <div class="summary">
-      <p>
-        其实本博客起源于自己对Python的一腔热爱
-      </p>
-      <p>
-        在从第一次写Python 到网站上线 大概用了不到一个月的时间
-      </p>
-      <p>
-        在一开始的很迷茫 甚至不知道从何做起的时候 到现在基本上大大小小的问题都可以在很短的时间内搞定
-      </p>
-      <p>
-        真的就更加热爱Python这门神奇的语言了
-      </p>
-      <br />
-      <p>
-        这个博客的诞生离不开的还有一个人 也算是在这个人的鼓励和陪伴下 一砖一瓦的堆砌起来的 我简单的叫她小笨好了
-      </p>
-      <p>
-        在我写下这段文字的时候 小笨也在经历一段很艰难的时光 我想 也算是一种历练吧
-      </p>
-      <p>
-        不管事情成功与否 慢慢成长后的我们 再来回味当时的酸甜苦辣 总会是开心的吧
-      </p>
-      <p>
-        我想这就足够了
-      </p>
-      <br />
-      <p>
-        总的来说 这个网站算是个人博客 其中记录着我的成长史 还有我解决问题的笔记 以及网站成长的笔记 有时候它算是我的梦幻城堡 有时候它算是我的求职简历 也有时候算是打发时间的工具
-      </p>
-      <p>
-        但是不管怎么样 网站 还有我 会随着时间的迁移 一步一步的成长下去
-      </p>
-      <p>
-        我也希望这是没有结束的开端
-      </p>
-      <br />
-      <p>
-        <b>姓名:</b> He.Kang
-      <br />
-        <b>使用名:</b> Scen, Tuzii
-      <br />
-        <b>昵称:</b> 兔子
-      <br />
-        <b>职业:</b> web开发工程师
-      <br />
-        <b>现居地:</b> 上海
-      <br />
-        <b>Email:</b> he.kang@dev-engine.com
-      <br />
-        <b>博客开源项目地址:</b> <a href="https://bitbucket.org/Scen/dev_blog">Bitbucket</a> | <a href="https://github.com/ScenK/dev_blog">Github</a>
-      </p>
-      <br/>
-      <p>
-        签名档: 并不是所有唯美的故事 都伴有精彩的风景. 我只能尽我所能, 带你看遍整个春夏秋冬.
-        By Scen.
-        2012-02-22
-      </p>
+      {{ content.get('html') }}
     </div>
   </div>
 </div>

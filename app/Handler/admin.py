@@ -10,10 +10,11 @@ from Model.comments import Comment
 from Model.gallaries import Gallary
 from Model.categories import Category
 from Model.tags import Tag
+from Model.pages import Page
 import json
 
 from douban_client import DoubanClient
-from Config.config import config as conf 
+from Config.config import config as conf
 
 conf = conf.site_config()
 
@@ -40,7 +41,7 @@ class LoginHandler(BaseHandler):
         if profile is not None and pas == profile.get('password'):
 
             # Set Cookie or Session
-            if rem is not None: 
+            if rem is not None:
                 self.set_secure_cookie("user", profile.get('user'))
             else:
                 self.set_secure_cookie("user", profile.get('user'), expires_days=None)
@@ -80,7 +81,7 @@ class AdminHandler(BaseHandler):
         first_diary = Diary.get_first_diary()
         comment_count = Comment.get_comment_count()
 
-        usr = tornado.escape.xhtml_escape(self.current_user)  
+        usr = tornado.escape.xhtml_escape(self.current_user)
         site_start = Admin.find_by_username(usr).get('site_start')
         self.render('Admin/dashboard.html', douban_login=douban_login,
                     diary_count=diary_count, last_diary=last_diary,
@@ -103,13 +104,13 @@ class AdminDiaryListHandler(BaseHandler):
             next_page = True
         elif number < 1:
             self.send_error(404)
-            return 
+            return
         else:
             next_page = False
 
         self.render('Admin/Diary/list.html', diaries=diaries, page=page, next_page=next_page)
 
-# Categorys_page 
+# Categorys_page
 class AdminCategoryHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
@@ -120,11 +121,11 @@ class AdminCategoryHandler(BaseHandler):
 
         self.render('Admin/Category/index.html', categories=categories)
 
-# Comments_page 
+# Comments_page
 class AdminCommentHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, page):
-        
+
         try:
             comments = Comment.get(page)
         except Exception as e:
@@ -135,7 +136,7 @@ class AdminCommentHandler(BaseHandler):
             next_page = True
         elif number < 1:
             self.send_error(404)
-            return 
+            return
         else:
             next_page = False
 
@@ -178,13 +179,13 @@ class DiaryAddHandler(BaseHandler):
             try:
                 c_id = detail.get('_id')
             except:
-                c_id = Category.new(c_name) 
+                c_id = Category.new(c_name)
 
         try:
             Diary.add(title, content, c_name, c_id, splited_tags)
         except Exception as e:
             print str(e)
-        
+
         self.redirect('/admin/all-post/1')
 
 # Diary Del_action
@@ -214,7 +215,7 @@ class DiaryUpdateHandler(BaseHandler):
 
     @tornado.web.authenticated
     def post(self, *args):
-        
+
         try:
             did = self.get_argument('did')
             title = self.get_argument('title')
@@ -224,7 +225,7 @@ class DiaryUpdateHandler(BaseHandler):
         except Exception as e:
             refer = self.request.headers.get('Referer')
             self.redirect(refer)
-        
+
         try:
             tags = self.get_argument('tags')
         except:
@@ -244,7 +245,7 @@ class DiaryUpdateHandler(BaseHandler):
             try:
                 c_id = detail.get('_id')
             except:
-                c_id = Category.new(c_name) 
+                c_id = Category.new(c_name)
         try:
             Diary.update(did, title, content, c_name, c_id, splited_tags)
         except Exception as e:
@@ -279,14 +280,14 @@ class DiaryAddPhotoHandler(BaseHandler):
         except Exception as e:
           print str(e)
 
-# Gallary_page 
+# Gallary_page
 class AdminGallaryHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         gallaries = Gallary.get_all()
         self.render('Admin/Gallary/index.html', gallaries=gallaries)
 
-# Gallary_add_page 
+# Gallary_add_page
 class AdminGallaryAddHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self, *args):
@@ -297,7 +298,7 @@ class AdminGallaryAddHandler(BaseHandler):
         except Exception as e:
           print str(e)
 
-# Gallary_detail_page 
+# Gallary_detail_page
 class AdminGallaryDetailHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, _id):
@@ -307,7 +308,7 @@ class AdminGallaryDetailHandler(BaseHandler):
         except Exception as e:
           print str(e)
 
-# Gallary_add_photo_action 
+# Gallary_add_photo_action
 class AdminGallaryAddPhotoHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self, *args):
@@ -324,7 +325,7 @@ class AdminGallaryAddPhotoHandler(BaseHandler):
             except Exception as e:
               print str(e)
 
-# Category_new_action 
+# Category_new_action
 class AdminCategoryAddHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self, *args):
@@ -339,3 +340,110 @@ class AdminCategoryAddHandler(BaseHandler):
           self.write(json.dumps({'success': 'true', 'cid': cid}))
         else:
           self.write(json.dumps({'success': 'false'}))
+
+# Category_del_action
+class AdminCategoryDelHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, c_id):
+        try:
+          Category.del_category(c_id)
+        except Exception as e:
+          print str(e)
+
+        self.redirect('/admin/category')
+
+# Category_detail_page
+class AdminCategoryDetailHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, c_id):
+        try:
+            categories = Category.find_all_by_id(c_id)
+        except Exception as e:
+          print str(e)
+
+        self.render('Admin/Category/detail.html', categories=categories)
+
+# Category_detail_page
+class AdminCategoryDelDiaryHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, did):
+        try:
+            Category.del_diary(did)
+        except Exception as e:
+          print str(e)
+
+        self.redirect('/admin/category')
+
+# Page
+class AdminPageHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        try:
+            pages = Page.get()
+        except Exception as e:
+            print str(e)
+
+        self.render('Admin/Page/index.html', pages=pages)
+
+# Page add
+class AdminPageAddHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, *args):
+        self.render('Admin/Page/add.html')
+
+    @tornado.web.authenticated
+    def post(self, *args):
+        try:
+            title = self.get_argument('title')
+            property = self.get_argument('property')
+            content = self.get_argument('content')
+        except Exception as e:
+            self.redirect('/admin/page/add')
+            print str(e)
+
+        try:
+            Page.new(title, content, property)
+        except Exception as e:
+            print str(e)
+
+        self.redirect('/admin/page')
+
+# Page edit
+class AdminPageEditHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, pid):
+        try:
+            detail = Page.find_by_id(pid)
+        except Exception as e:
+            print str(e)
+
+        self.render('Admin/Page/edit.html', detail=detail)
+
+    @tornado.web.authenticated
+    def post(self, *args):
+        try:
+            pid = self.get_argument('page_id')
+            title = self.get_argument('title')
+            property = self.get_argument('property')
+            content = self.get_argument('content')
+        except Exception as e:
+            refer = self.request.headers.get('Referer')
+            self.redirect(refer)
+
+        try:
+            Page.update(pid, title, content, property)
+        except Exception as e:
+            print str(e)
+
+        self.redirect('/admin/page')
+
+# Page del
+class AdminPageDelHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, pid):
+        try:
+            Page.del_page(pid)
+        except Exception as e:
+            print str(e)
+
+        self.redirect('/admin/page')

@@ -1,0 +1,28 @@
+{% extends "../base.html" %}
+{% block title %} 静态内容管理 {% end %}
+
+{% block content %}
+  <table class="twelve admin-pages-list">
+    <thead>
+      <tr>
+        <th>页面名称</th>
+        <th>页面属性</th>
+        <th>创建时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for i in pages %}
+      <tr>
+        <td><a href="/admin/page/edit/{{ i.get('_id')}}" title="编辑《{{ escape(i.get('title')) }}》">{{ escape(i.get('title')) }}</a></td>
+        <td>{{ i.get('property') }}</td>
+        <td>{{ i.get('publish_time') }}</td>
+        <td><a href="/admin/page/del/{{ i.get('_id')}}" title="删除《{{ escape(i.get('title')) }}》">删除</a></td>
+      </tr>
+    {% end %}
+    </tbody>
+  </table>
+{% end %}
+{% block leftbar %}
+    {% module Template("Admin/Modules/_leftbar.html", current=5) %}
+{% end %}

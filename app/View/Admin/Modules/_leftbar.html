@@ -21,6 +21,17 @@
       </ul>
     </li>
     <li {% if current == 3 %} class='active' {% end %}><a href="/admin/comments/all-comment/1">评论</a></li>
-    <li {% if current == 4 %} class='active' {% end %}><a href="/admin/category">分类管理</a></li>
+    <li {% if current == 4  or current == 4.1 %} class='active' {% end %}><a href="/admin/category">分类管理</a></li>
+    <li {% if current == 5  or current == 5.1 %} class='active' {% end %}>
+      <a href="/admin/page">页面管理</a>
+      <ul{% if current == 5 or current == 5.1 %}{% else %} class='hide' {% end %}>
+        <li {% if current == 5 %} class='active' {% end %}>
+          <a href="/admin/page">所有页面</a>
+        </li>
+        <li {% if current == 5.1 %} class='active' {% end %}>
+          <a href="/admin/page/add">新建页面</a>
+        </li>
+      </ul>
+    </li>
   </ul>
 </section>

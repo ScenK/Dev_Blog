@@ -2,6 +2,26 @@
 {% block title %} 分类管理 {% end %}
 {% block content %}
 <h5 class="no-marg-top subheader">在此对您的分类进行管理。</h5>
+  <table class="twelve category">
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th>日志个数</th>
+        <th>创建时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in categories %}
+      <tr>
+        <td><a href="/admin/category/detail/{{ i.get('_id') }}">{{ i.get('name') }}</a></td>
+        <td>{{ i.get('diaries_num') }}</td>
+        <td>{{ i.get('publish_time') }}</td>
+        <td><a href="/admin/category/del/{{ i.get('_id') }}">删除</a></td>
+      </tr>
+      {% end %}
+    </tbody>
+  </table>
 
 {% end %}
 {% block leftbar%}
