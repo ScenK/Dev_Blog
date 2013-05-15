@@ -39,7 +39,7 @@ var Tools = {
     $.ajax({
       type: 'POST',
       url: url,
-      data: {content:content, did:did, cid:cid, _xsrf:_xsrf, email:email, title:title, user:user}
+      data: {content:content, did:did, cid:cid, _xsrf:this.getCookie('_xsrf'), email:email, title:title, user:user}
     });
   },
 

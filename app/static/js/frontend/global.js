@@ -41,63 +41,29 @@
       }
   });
 
-  // auto img-position fix
-  $(document).ready(function(){
-    if($('p img').length > 0)
-    $('p img').parent().css('text-align', 'center');
-  });
 
-  /*
   // gallary page funciton
   $(document).ready(function() {
-
     //blocksit define
     $(window).load(function() {
       $('#colum-container').BlocksIt({
-        numOfCol: 5,
+        numOfCol: 2,
         offsetX: 8,
         offsetY: 8
       });
     });
 
-    //window resize
-    var currentWidth = 1200;
-    $(window).resize(function() {
-      var winWidth = $(window).width();
-      var conWidth;
-      if(winWidth < 660) {
-        conWidth = 480;
-        col = 2
-      } else if(winWidth < 960) {
-        conWidth = 720;
-        col = 3
-      } else if(winWidth < 1200) {
-        conWidth = 960;
-        col = 4;
-      } else {
-        conWidth = 1200;
-        col = 5;
-      }
-
-      if(conWidth != currentWidth) {
-        currentWidth = conWidth;
-        $('#colum-container').width(conWidth);
-        $('#colum-container').BlocksIt({
-          numOfCol: col,
-          offsetX: 8,
-          offsetY: 8
-        });
-      }
-    });
-  }); 
-  */
-  // load code prettyprint
-  $(document).ready(function(){
+    // load code prettyprint
     if($('code').length>0){
       $('code').parent().addClass('prettyprint');
       prettyPrint();
     };
-  });
+
+    // auto img-position fix
+    if($('p img').length > 0)
+      $('p img').parent().css('text-align', 'center');
+  }); 
+
   /*=======jQuery Functions===============*/
   
   // Get time

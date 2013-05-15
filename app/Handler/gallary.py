@@ -6,6 +6,7 @@ import tornado.web
 from base import BaseHandler
 from Model.accounts import Account
 from Model.gallaries import Gallary
+from Model.categories import Category
 from lib.email_util import send_error_email
 import json
 
@@ -14,8 +15,9 @@ class GallaryHandler(BaseHandler):
         try:
             albums = Gallary.get_all()
             profile = Account.get()
+            categories = Category.get()
         except Exception as e:
             self.send_error(404)
             send_error_email('Gallary get Error', str(e))
 
-        self.render('Gallary/index.html', albums=albums, profile=profile)
+        self.render('Gallary/index.html', albums=albums, profile=profile, categories=categories)
