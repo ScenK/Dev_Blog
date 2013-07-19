@@ -1,17 +1,16 @@
 
-###  同项目文件 bitbucket 分支请见: <https://bitbucket.org/Scen/dev_blog/> 为Dev开发版本
-###  使用Dev版本 会有不同程度的不稳定性 使用时请注意
-###
-### Copyright 2012-2013 Dev-engine
-###
-### Dev-Blog Python-Release Based On Tornado and MongoDB
-###
-### <http://tuzii.me/>
-###
-### License for the specific language governing permissions and limitations
-### under the License.
-###
-### Author : Scen.Kang
+### 注: Dev-Blog 版本更新: Dev-Blog2 pre-release项目地址:<https://github.com/ScenK/Dev_Blog2/> 建议使用新版本(旧版本迁移须知详见第二版README)
+
+##### Copyright 2012-2013 Dev-engine
+#####
+##### Dev-Blog Python-Release Based On Tornado and MongoDB
+#####
+##### <http://tuzii.me/>
+#####
+##### License for the specific language governing permissions and limitations
+##### under the License.
+#####
+##### Author : Scen.K
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
