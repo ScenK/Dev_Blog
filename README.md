@@ -1,5 +1,6 @@
 
-### 注: 版本更新: Dev-Blog2 pre-release项目地址:<https://github.com/ScenK/Dev_Blog2/>
+### 注: 版本更新: Dev-Blog2 pre-release
+### 项目地址:<https://github.com/ScenK/Dev_Blog2/>
 
 > 旧版本迁移须知详见第二版README
 
@@ -51,7 +52,6 @@ Author : Scen.K
         README.md
         requirements.txt                    Python基础安装包列表
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 + 安装须知:
 
     * 项目Wiki地址: <https://github.com/ScenK/dev_blog/wiki/>
@@ -80,12 +80,10 @@ Author : Scen.K
         - 每次改动的代码更新都可以使用fab update 进行服务端代码自动更新
     * !第一次使用请连接豆瓣或者微博账号
 
-    - - - - - - - - - -
     **注**
 
     **如果pip批量安装成功后启动服务器脚本发现报错 跟bson有关 那么pip uninstall bson pymongo**
     **然后重新先安装bson 再安装pymongo**
-    - - - - - - - - - -
 
 + 待完成:
     * 后端管理功能逐项添加
